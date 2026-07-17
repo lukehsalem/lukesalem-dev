@@ -1,0 +1,205 @@
+---
+import { site } from "../data/site";
+import { TECH } from "../data/tech";
+import Oscar from "../components/Oscar.astro";
+import OscarLaptop from "../components/OscarLaptop.astro";
+import "../styles/global.css";
+
+const year = new Date().getFullYear();
+
+const badge = (name: string) => {
+  const t = TECH[name] ?? { bg: "#232b3a", fg: "#cfd8e6" };
+  const ic = t.icon ? `<img src="https://cdn.simpleicons.org/${t.icon}/${t.ic}" alt="" loading="lazy" onerror="this.remove()"/>` : "";
+  return `<span class="badge" style="background:${t.bg};color:${t.fg}">${ic}${name}</span>`;
+};
+const linkRow = (o: Record<string, string>) =>
+  Object.entries(o).map(([k, v]) => `<a class="oscar-link" data-href="${v}" data-name="${k}">${k}</a>`).join("");
+
+const a = site.about;
+const arr = (x: string[]) => "[" + x.map((s) => `<span class="s">"${s}"</span>`).join(", ") + "]";
+const aboutHtml =
+`<span class="k">const</span> <span class="key">luke</span> <span class="p">=</span> {
+  <span class="key">name</span><span class="p">:</span> <span class="s">"${a.name}"</span><span class="p">,</span>
+  <span class="key">edu</span><span class="p">:</span> <span class="s">"${a.edu}"</span><span class="p">,</span>
+  <span class="key">now</span><span class="p">:</span> <span class="s">"${a.now}"</span><span class="p">,</span>
+  <span class="key">focus</span><span class="p">:</span> ${arr(a.focus)}<span class="p">,</span>
+  <span class="key">stack</span><span class="p">:</span> ${arr(a.stack)}<span class="p">,</span>
+  <span class="key">building</span><span class="p">:</span> <span class="s">"${a.building}"</span><span class="p">,</span>
+  <span class="key">certs</span><span class="p">:</span> ${arr(a.certs)}
+}`;
+
+const heat: number[] = [];
+for (let x = 0; x < 51; x++) for (let y = 0; y < 7; y++) {
+  const seed = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+  let r = seed - Math.floor(seed);
+  r *= x > 37 ? 1.35 : 1;
+  heat.push(r < 0.5 ? 0 : r < 0.7 ? 1 : r < 0.85 ? 2 : r < 0.95 ? 3 : 4);
+}
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{site.name} — {site.domain}</title>
+  <meta name="description" content={`${site.name} — CS @ FSU, Data Analyst II. Projects, experience, and stats.`} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="oscar-wrap"><Oscar size={118} claw={true} /></div>
+    <div class="brand">
+      <h1>luke salem<span class="dot">_</span></h1>
+      <p class="sub">CS @ FSU '27 · <b>Data Analyst II</b> · software + data + finance<br/><span class="lob">Oscar</span> runs the place — hover a project, he'll peek.</p>
+      <div class="links" set:html={linkRow(site.links)}></div>
+    </div>
+  </header>
+
+  <section class="window" id="window">
+    <div class="titlebar"><span class="dot3 r"></span><span class="dot3 yl"></span><span class="dot3 gr"></span><span class="title">luke@lukesalem.dev — zsh</span></div>
+    <div class="screen" id="screen" role="log" aria-live="polite">
+      <div id="history"></div>
+      <div id="inputline" hidden><span class="prompt">luke@lukesalem.dev</span><span class="muted">:</span><span class="path">~</span><span class="muted">$</span>
+        <input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" /></div>
+      <p class="hint" id="hint" hidden>try <span class="amber">about</span>, <span class="amber">experience</span>, <span class="amber">projects</span>, <span class="amber">stats</span> · <kbd>Enter</kbd></p>
+    </div>
+  </section>
+
+  <section class="sec" id="about">
+    <div class="sec-head"><h2>about</h2><span class="cmt">// whoami</span></div>
+    <div class="codeblock" set:html={aboutHtml}></div>
+  </section>
+
+  <section class="sec" id="experience">
+    <div class="sec-head"><h2>experience</h2><span class="cmt">// where I've worked</span></div>
+    <div class="exp">
+      {site.experience.map((e) => (
+        <div class="row">
+          <div class="r1"><span class="role">{e.role} <span class="muted">@</span> <span class="a2">{e.org}</span></span><span class="date">{e.date}</span></div>
+          <div class="note">{e.note}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec" id="projects">
+    <div class="sec-head"><h2>projects</h2><span class="cmt">{`// ${site.projects.length} builds`}</span></div>
+    <div class="grid">
+      {site.projects.map((p) => (
+        <article class="card">
+          <div class="peek"><Oscar size={64} /></div>
+          <div class="ctop"><h3>{p.name}</h3>{p.status && <span class="status dev">{p.status}</span>}</div>
+          <p class="desc">{p.desc}</p>
+          <div class="badges" set:html={p.tech.map(badge).join("")}></div>
+          <div class="clinks">
+            {p.github && <a class="oscar-link" data-href={p.github} data-name={`${p.name} repo`}>code ↗</a>}
+            {p.live && <a class="oscar-link" data-href={p.live} data-name={`${p.name} demo`}>demo ↗</a>}
+            {!p.github && !p.live && <span class="priv">private · in dev</span>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="sec" id="stats">
+    <div class="sec-head"><h2>stats</h2><span class="cmt">// by the numbers</span></div>
+    <div class="kpis">
+      {site.kpis.map((k) => (<div class="kpi"><div class="n">{k.n}</div><div class="l">{k.l}</div></div>))}
+    </div>
+    <div class="statbox">
+      <div class="t">contribution activity <span class="cm">// sample — wire to live GitHub</span></div>
+      <div class="heat">{heat.map((lv) => (<i data-l={lv}></i>))}</div>
+      <div class="legend">less <i style="background:#151b26"></i><i style="background:#4a181b"></i><i style="background:#8f2329"></i><i style="background:#c72f36"></i><i style="background:#ff5a5f"></i> more</div>
+    </div>
+    <div class="statbox">
+      <div class="t">focus areas <span class="cm">// self-assessed</span></div>
+      <div id="bars">
+        {site.focusBars.map((b) => (
+          <div class="bar"><span class="lbl">{b.lbl}</span><span class="track"><span class="fill" data-p={b.pct}></span></span><span class="pct">{b.pct}%</span></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© {year} luke salem · built with a lobster 🦞</span>
+    <span class="s" set:html={linkRow(site.links)}></span>
+  </footer>
+</div>
+
+<div id="loader"><div class="loadcard"><OscarLaptop /><div class="cap">Oscar's opening <b id="loaderName">that link</b> for you…</div></div></div>
+
+<script type="application/json" id="site-data" set:html={JSON.stringify({ domain: site.domain, email: site.email, projects: site.projects.map((p) => ({ name: p.name, status: p.status })), stack: site.about.stack })}></script>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import Lenis from "lenis";
+  gsap.registerPlugin(ScrollTrigger);
+  const D = JSON.parse(document.getElementById("site-data").textContent);
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;" }[c]));
+
+  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  lenis.on("scroll", ScrollTrigger.update);
+
+  gsap.utils.toArray(".card,.statbox,.kpi,.exp .row,.codeblock").forEach((el) =>
+    gsap.fromTo(el, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .5, ease: "power2.out", scrollTrigger: { trigger: el, start: "top 90%" } }));
+  ScrollTrigger.create({ trigger: "#bars", start: "top 85%", once: true,
+    onEnter(){ document.querySelectorAll(".fill").forEach((f) => f.style.width = f.dataset.p + "%"); } });
+
+  // Oscar laptop loader
+  const loader = $("loader");
+  function openWithOscar(href, name){
+    const win = window.open(href, "_blank", "noopener");
+    $("loaderName").textContent = name || "that link";
+    loader.classList.add("on");
+    const bar = document.getElementById("loadbar");
+    if (bar){ bar.setAttribute("width", "0"); gsap.to(bar, { attr: { width: 76 }, duration: 1.05, ease: "power1.inOut" }); }
+    setTimeout(() => { loader.classList.remove("on"); if (!win) location.href = href; }, 1200);
+  }
+  document.addEventListener("click", (e) => { const el = e.target.closest(".oscar-link"); if (!el) return;
+    e.preventDefault(); openWithOscar(el.dataset.href, el.dataset.name); });
+  loader.addEventListener("click", () => loader.classList.remove("on"));
+
+  // terminal
+  const history = $("history"), inputline = $("inputline"), hint = $("hint"), cmd = $("cmd"), screen = $("screen");
+  function print(html, animate = true){ const el = document.createElement("div"); el.className = "out line"; el.innerHTML = html; history.appendChild(el);
+    if (animate) gsap.to(el, { opacity: 1, y: 0, duration: .3, ease: "power2.out", startAt: { y: 6 } }); else el.style.opacity = 1; }
+  function pp(t){ print(`<span class="prompt">luke@lukesalem.dev</span><span class="muted">:</span><span class="path">~</span><span class="muted">$</span> <span class="amber">${esc(t)}</span>`, false); }
+  const go = (id) => lenis.scrollTo(id, { duration: 1.0, offset: -14 });
+  const commands = {
+    help(){ return `commands:
+  <span class="accent">about</span>      <span class="accent">experience</span>   <span class="accent">projects</span>
+  <span class="accent">stats</span>      <span class="accent">contact</span>      <span class="accent">oscar</span>       <span class="accent">clear</span>`; },
+    about(){ go("#about"); return "→ scrolling to about"; },
+    experience(){ go("#experience"); return "→ scrolling to experience"; },
+    projects(){ go("#projects"); return D.projects.map((p) => `<span class="lob">›</span> ${esc(p.name)}${p.status ? ` <span class="muted">(${esc(p.status)})</span>` : ""}`).join("\n"); },
+    stats(){ go("#stats"); return "→ scrolling to stats"; },
+    skills(){ return D.stack.join(" · "); },
+    contact(){ return `email: <a class="oscar-link" data-href="mailto:${esc(D.email)}" data-name="email">${esc(D.email)}</a>`; },
+    oscar(){ return `🦞 <span class="lob">Oscar</span>: "hover a project card — i'll peek. click a link — i'll boot the laptop."`; },
+    clear(){ history.innerHTML = ""; return null; },
+  };
+  function run(raw){ const s = raw.trim(); pp(s); const n = s.split(" ")[0].toLowerCase(); if (n === "") return;
+    const fn = commands[n]; if (fn){ const o = fn(); if (o != null) print(o); } else print(`<span style="color:var(--red)">command not found: ${esc(n)}</span> · try <span class="amber">help</span>`); }
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  async function boot(){ await gsap.to("#window", { opacity: 1, y: 0, duration: .55, ease: "power3.out" });
+    const b = [`<span class="muted">welcome to</span> <span class="accent">${D.domain}</span> <span class="muted">— type</span> <span class="amber">help</span>`, ``];
+    for (const l of b){ print(l, false); await sleep(160); } inputline.hidden = false; hint.hidden = false; }
+  const past = []; let hi = -1;
+  cmd.addEventListener("keydown", (e) => { if (e.key === "Enter"){ const v = cmd.value; if (v.trim()){ past.push(v); hi = past.length; } run(v); cmd.value = ""; }
+    else if (e.key === "ArrowUp"){ if (hi > 0){ hi--; cmd.value = past[hi]; e.preventDefault(); } }
+    else if (e.key === "ArrowDown"){ if (hi < past.length - 1){ hi++; cmd.value = past[hi]; } else { hi = past.length; cmd.value = ""; } } });
+  screen.addEventListener("click", (e) => { if (!e.target.closest("a")) cmd.focus(); });
+  boot();
+</script>
+</body>
+</html>

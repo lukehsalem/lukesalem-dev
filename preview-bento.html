@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Luke Salem — lukesalem.dev</title>
+<meta name="description" content="Luke Salem — CS @ FSU, Data Analyst II. A single-screen dashboard, monitored by Oscar." />
+<link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0d13; --bg-2:#0e131c; --bg-3:#111826; --bg-4:#0c1119;
+    --border:#1d2634; --border-2:#2b3850;
+    --text:#cbd5e6; --head:#f2f6fb; --muted:#6f81a0; --dim:#465571;
+    --accent:#5cf2b0; --a2:#57b6ff; --amber:#f2c14e; --red:#ff6b6b;
+    --lob:#e5484d; --lobD:#b02a2f;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace; --radius:12px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:var(--mono);color:var(--text);font-size:14px;line-height:1.5;overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    background:radial-gradient(1000px 520px at 84% -12%, #1a1119 0%, transparent 55%),
+               radial-gradient(700px 400px at 0% 110%, #0d1622 0%, transparent 60%), var(--bg);}
+  a{color:var(--a2);text-decoration:none} .muted{color:var(--muted)} .accent{color:var(--accent)} .amber{color:var(--amber)} .lob{color:var(--lob)}
+
+  /* ===== DASHBOARD GRID ===== */
+  .dash{height:100vh;display:grid;gap:12px;padding:14px;
+    grid-template-columns:repeat(4,1fr);grid-template-rows:auto 1fr 1fr;}
+  .tile{background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border:1px solid var(--border);border-radius:var(--radius);
+    padding:14px 15px;position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:0}
+  .tile.click{cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+  .tile.click:hover{transform:translateY(-3px);border-color:var(--lob);box-shadow:0 18px 40px -26px rgba(229,72,77,.5)}
+  .tile .lbl{font-size:11px;color:var(--dim);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+  .tile .lbl b{color:var(--lob);font-weight:500}
+  .tile .open{font-size:10.5px;color:var(--muted);opacity:0;transition:opacity .18s}
+  .tile.click:hover .open{opacity:1}
+
+  /* brand/header */
+  #brand{grid-column:1/-1;grid-row:1;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    background:none;border:none;padding:2px 4px;overflow:visible}
+  #brand h1{font-size:clamp(22px,3.4vw,34px);margin:0;color:var(--head);font-weight:700;letter-spacing:-1px;line-height:1}
+  #brand h1 .dot{color:var(--lob)}
+  #brand .tag{color:var(--muted);font-size:12.5px;margin-top:5px}
+  #brand .tag b{color:var(--accent);font-weight:500}
+  .navlinks{display:flex;gap:8px;flex-wrap:wrap}
+  .navlinks a{font-size:12px;color:var(--text);border:1px solid var(--border);border-radius:7px;padding:5px 11px;cursor:pointer;transition:.16s}
+  .navlinks a:hover{border-color:var(--lob);color:var(--head);background:rgba(229,72,77,.08)}
+
+  /* terminal tile */
+  #tile-term{grid-column:1;grid-row:2/4}
+  #screen{flex:1;overflow:auto;font-size:12.5px;line-height:1.5;margin-top:2px}
+  #screen::-webkit-scrollbar{width:6px}#screen::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+  .out{margin:3px 0}
+  #inputline{display:flex;gap:6px;align-items:center;margin-top:3px}
+  #cmd{flex:1;background:transparent;border:none;outline:none;color:var(--text);font:inherit;caret-color:var(--accent)}
+  .prompt{color:var(--accent)}.path{color:var(--a2)}
+
+  #tile-projects{grid-column:2/4;grid-row:2}
+  #tile-about{grid-column:4;grid-row:2}
+  #tile-stats{grid-column:2;grid-row:3}
+  #tile-exp{grid-column:3;grid-row:3}
+  #tile-contact{grid-column:4;grid-row:3}
+
+  /* tile teasers */
+  .teaser{color:var(--muted);font-size:12px;flex:1;min-height:0;overflow:hidden}
+  .big{font-size:26px;font-weight:700;color:var(--lob);line-height:1}
+  .proj-mini{display:flex;flex-direction:column;gap:6px;margin-top:2px}
+  .proj-mini .p{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text)}
+  .proj-mini .p .st{font-size:9.5px;color:var(--amber);border:1px solid rgba(242,193,78,.4);border-radius:999px;padding:1px 6px}
+  .proj-mini .p .tk{color:var(--dim);font-size:11px;margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:44%}
+  .heat-mini{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:2px;margin-top:4px}
+  .heat-mini i{width:8px;height:8px;border-radius:1.5px;background:#151b26}
+  .heat-mini i[data-l="1"]{background:#4a181b}.heat-mini i[data-l="2"]{background:#8f2329}.heat-mini i[data-l="3"]{background:#c72f36}.heat-mini i[data-l="4"]{background:#ff5a5f}
+  .kpi-row{display:flex;gap:14px;margin-top:6px}
+  .kpi-row .k .n{font-size:18px;font-weight:700;color:var(--lob);line-height:1}
+  .kpi-row .k .l{font-size:10px;color:var(--muted);margin-top:3px}
+  .exp-mini{display:flex;flex-direction:column;gap:9px;margin-top:2px}
+  .exp-mini .e .r{color:var(--head);font-size:12px;font-weight:600}
+  .exp-mini .e .o{color:var(--a2);font-size:11px}
+  .contact-links{display:flex;flex-direction:column;gap:8px;margin-top:2px}
+  .contact-links a{font-size:12.5px;color:var(--text);cursor:pointer;display:flex;justify-content:space-between;border-bottom:1px dashed var(--border);padding-bottom:6px}
+  .contact-links a:hover{color:var(--lob)}
+  .monitor{position:absolute;left:16px;bottom:9px;font-size:11px;color:var(--dim);z-index:5}
+  .monitor b{color:var(--lob)}
+
+  /* ===== MODALS ===== */
+  #ov{position:fixed;inset:0;background:rgba(6,8,13,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:60;padding:20px}
+  #ov.on{display:flex}
+  .panel{background:var(--bg-2);border:1px solid var(--border-2);border-radius:16px;width:min(720px,96vw);max-height:84vh;overflow:auto;
+    box-shadow:0 40px 100px -30px #000;padding:22px 24px}
+  .panel h2{margin:0 0 3px;font-size:17px;color:var(--head)} .panel h2::before{content:"~/ ";color:var(--lob)}
+  .panel .sub{color:var(--dim);font-size:12px;margin-bottom:16px}
+  .pclose{position:absolute;top:18px;right:20px;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;z-index:2}
+  .pwrap{position:relative}
+  .bio{color:var(--text);font-size:13.5px;line-height:1.7;margin:0 0 16px}
+  .creds{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  @media(max-width:560px){.creds{grid-template-columns:1fr}}
+  .cred{border:1px solid var(--border);border-radius:10px;padding:12px 13px;background:var(--bg-3)}
+  .cred .o{color:var(--head);font-weight:600;font-size:13px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+  .cred .o .tg{font-size:9.5px;color:var(--lob);border:1px solid rgba(229,72,77,.4);border-radius:999px;padding:1px 7px;white-space:nowrap}
+  .cred .o .tg.prog{color:var(--amber);border-color:rgba(242,193,78,.45)}
+  .cred .ll{color:var(--a2);font-size:12px;margin-top:4px} .cred .nn{color:var(--muted);font-size:11.5px;margin-top:3px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .chip{font-size:11px;color:var(--text);background:var(--bg-4);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+
+  .pcard{border:1px solid var(--border);border-radius:11px;padding:14px 15px;margin-bottom:12px;background:var(--bg-3)}
+  .pcard .ct{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .pcard h3{margin:0;font-size:14px;color:var(--head)} .pcard h3::before{content:"› ";color:var(--lob)}
+  .status{font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px;color:var(--amber);border:1px solid rgba(242,193,78,.4);background:rgba(242,193,78,.09)}
+  .pcard .d{color:var(--muted);font-size:12px;line-height:1.55;margin:0 0 10px}.pcard .d::before{content:"// ";color:var(--dim)}
+  .badges{display:flex;flex-wrap:wrap;gap:5px}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500;line-height:1;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+  .badge img{width:12px;height:12px;display:block}
+  .plinks{display:flex;gap:12px;margin-top:10px;font-size:11.5px}.plinks a{color:var(--muted);cursor:pointer}.plinks a:hover{color:var(--lob)}.plinks .priv{color:var(--dim)}
+  .tl{border-left:2px solid var(--border);padding-left:16px;margin-left:4px;display:grid;gap:14px}
+  .tl .row{position:relative}.tl .row::before{content:"";position:absolute;left:-23px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--lob);box-shadow:0 0 0 3px var(--bg-2)}
+  .tl .r1{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.tl .role{color:var(--head);font-weight:600;font-size:13px}.tl .date{color:var(--dim);font-size:11.5px}.tl .note{color:var(--muted);font-size:12px;margin-top:3px}
+  .bar{display:grid;grid-template-columns:120px 1fr 38px;align-items:center;gap:10px;margin:7px 0;font-size:12px}
+  .bar .track{height:8px;background:#151b26;border-radius:6px;overflow:hidden}.bar .fill{height:100%;background:linear-gradient(90deg,var(--lobD),var(--lob));border-radius:6px}
+  .heatbig{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;overflow-x:auto;margin:10px 0}
+  .heatbig i{width:11px;height:11px;border-radius:2px;background:#151b26}
+  .heatbig i[data-l="1"]{background:#4a181b}.heatbig i[data-l="2"]{background:#8f2329}.heatbig i[data-l="3"]{background:#c72f36}.heatbig i[data-l="4"]{background:#ff5a5f}
+  .legend{display:flex;gap:6px;justify-content:flex-end;color:var(--dim);font-size:11px;align-items:center}.legend i{width:11px;height:11px;border-radius:2px}
+
+  /* ===== OSCAR (live) ===== */
+  #oscarLayer{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+  #oscar{position:absolute;left:0;top:0;width:70px;height:70px;pointer-events:auto;cursor:pointer;
+    transition:transform 1.7s cubic-bezier(.4,0,.3,1);filter:drop-shadow(0 6px 10px rgba(229,72,77,.35))}
+  #oscar.walk .osvg{animation:owalk .38s ease-in-out infinite}
+  @keyframes owalk{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(2deg)}}
+  #ball{position:absolute;left:0;top:0;width:16px;height:16px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #fff 0%, #dfe6ee 55%, #b9c2cd 100%);
+    box-shadow:inset -2px -2px 3px rgba(0,0,0,.25);opacity:0;pointer-events:none;z-index:39}
+  #bubble{position:absolute;background:var(--bg-2);border:1px solid var(--border-2);border-radius:8px;padding:3px 8px;font-size:11px;color:var(--head);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;z-index:41}
+  .oscar{--l:#e5484d;--d:#b02a2f;--h:#ff8a8f}
+  .oscar .bob{animation:oscbob 3.1s ease-in-out infinite alternate}
+  @keyframes oscbob{from{transform:translateY(0)}to{transform:translateY(3px)}}
+  .oscar .lid{transform:scaleY(0);transform-box:fill-box;transform-origin:top;animation:oscblink 5s infinite}
+  .oscar .lid.b{animation-delay:.1s}
+  @keyframes oscblink{0%,93%,100%{transform:scaleY(0)}95%,98%{transform:scaleY(1)}}
+  .oscar .claw{transform-box:fill-box;transform-origin:100% 50%}
+  #oscar.snap .claw{animation:clawsnap .3s cubic-bezier(.3,0,.2,1)}
+  @keyframes clawsnap{0%{transform:rotate(0)}30%{transform:rotate(-46deg)}46%{transform:rotate(-46deg)}100%{transform:rotate(0)}}
+  #oscar.hop{animation:ohop .5s ease}
+  @keyframes ohop{0%,100%{margin-top:0}40%{margin-top:-16px}}
+  @media(prefers-reduced-motion:reduce){#oscar{transition:none}.oscar *,#oscar.walk .osvg{animation:none!important}}
+
+  /* laptop loader */
+  #load{position:fixed;inset:0;background:rgba(6,8,13,.75);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:70}
+  #load.on{display:flex}
+  .lcard{background:var(--bg-2);border:1px solid var(--border-2);border-radius:16px;padding:22px 26px;text-align:center}
+  .lcard .cap{font-size:12.5px;color:var(--muted);margin-top:8px}.lcard .cap b{color:var(--lob)}
+
+  @media(max-width:860px){
+    body{overflow:auto}
+    .dash{height:auto;grid-template-columns:1fr;grid-auto-rows:auto}
+    #tile-term,#tile-projects,#tile-about,#tile-stats,#tile-exp,#tile-contact{grid-column:1;grid-row:auto}
+    #tile-term{min-height:220px}
+  }
+</style>
+</head>
+<body>
+<div class="dash">
+  <header id="brand">
+    <div>
+      <h1>luke salem<span class="dot">_</span></h1>
+      <div class="tag">CS @ FSU '27 · <b>Data Analyst II</b> · software + data + finance</div>
+    </div>
+    <nav class="navlinks" id="navlinks"></nav>
+  </header>
+
+  <section class="tile" id="tile-term">
+    <div class="lbl"><span><b>~/</b>terminal</span></div>
+    <div id="screen" role="log" aria-live="polite">
+      <div id="history"></div>
+      <div id="inputline" hidden><span class="prompt">luke</span><span class="muted">@</span><span class="path">dev</span><span class="muted">:~$</span>
+        <input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" /></div>
+    </div>
+    <span class="monitor">monitored by <b>Oscar</b> 🦞</span>
+  </section>
+
+  <section class="tile click" id="tile-projects" data-modal="projects">
+    <div class="lbl"><span><b>~/</b>projects</span><span class="open">open ↗</span></div>
+    <div class="teaser"><span class="big" id="projN"></span> <span class="muted">builds shipped</span>
+      <div class="proj-mini" id="projMini"></div></div>
+  </section>
+
+  <section class="tile click" id="tile-about" data-modal="about">
+    <div class="lbl"><span><b>~/</b>about</span><span class="open">open ↗</span></div>
+    <div class="teaser">who I am, and the receipts —<br/>Vanderbilt · Harvard · Stanford · IBM.
+      <div class="chips" style="margin-top:10px"><span class="chip">research</span><span class="chip">certs</span><span class="chip">FSU '27</span></div></div>
+  </section>
+
+  <section class="tile click" id="tile-stats" data-modal="stats">
+    <div class="lbl"><span><b>~/</b>stats</span><span class="open">open ↗</span></div>
+    <div class="teaser"><div class="kpi-row" id="kpiMini"></div><div class="heat-mini" id="heatMini"></div></div>
+  </section>
+
+  <section class="tile click" id="tile-exp" data-modal="experience">
+    <div class="lbl"><span><b>~/</b>experience</span><span class="open">open ↗</span></div>
+    <div class="teaser"><div class="exp-mini" id="expMini"></div></div>
+  </section>
+
+  <section class="tile" id="tile-contact">
+    <div class="lbl"><span><b>~/</b>contact</span></div>
+    <div class="contact-links" id="contactLinks"></div>
+  </section>
+</div>
+
+<!-- overlay / modal -->
+<div id="ov"><div class="pwrap panel" id="panel"><span class="pclose" id="pclose">×</span><div id="panelBody"></div></div></div>
+<!-- laptop loader -->
+<div id="load"><div class="lcard"><div id="loadScene"></div><div class="cap">Oscar's opening <b id="loadName">that</b>…</div></div></div>
+<!-- oscar -->
+<div id="oscarLayer"><div id="bubble"></div><div id="ball"></div><div id="oscar"></div></div>
+
+<script>
+const SITE = {
+  domain:"lukesalem.dev", email:"lhs23b@fsu.edu",
+  links:{ github:"https://github.com/lukehsalem", linkedin:"https://linkedin.com/in/lukehsalem", email:"mailto:lhs23b@fsu.edu" },
+  bio:"I'm Luke — a rising senior at FSU who likes turning messy data and half-formed ideas into things that actually ship. Right now I'm a Data Analyst II for Florida's insurance regulator, building OrgFlow on the side, and aiming squarely at the intersection of software, data, and finance.",
+  credentials:[
+    { org:"Vanderbilt University", label:"Data Mining Research · OUYANG Group", note:"Curating ML training data for materials-property prediction", tag:"Research" },
+    { org:"Stanford Online", label:"Machine Learning Specialization", note:"Coming soon", tag:"In progress" },
+    { org:"Harvard (edX)", label:"CS50: Programming with Python", note:"Certificate", tag:"Cert" },
+    { org:"IBM", label:"Agile Development & Scrum", note:"Issued with honors", tag:"Cert" },
+    { org:"Florida State University", label:"B.S. Computer Science", note:"Expected May 2027", tag:"Degree" }
+  ],
+  stack:["Python","SQL / SAS","C#","TypeScript","AWS","Pandas"],
+  experience:[
+    { role:"Data Analyst II", org:"FL Office of Insurance Regulation", date:"Jun 2026 – Present",
+      note:"Regulatory & market data analysis for the Life & Health Product Review unit — statistical analysis, reporting, process automation; reviewing insurer filings that use predictive models, SAS, and AI/ML." },
+    { role:"Data Mining Research", org:"OUYANG Group · Vanderbilt", date:"Mar 2026 – Present",
+      note:"Extract & annotate battery-materials data from scientific literature into standardized schemas; curate training data for an ML Literature Mining Database." },
+    { role:"Founder & Owner", org:"Luke Salem Copywriting", date:"Jun 2024 – Jun 2025",
+      note:"Founded a digital marketing service (copywriting + email marketing) driving client acquisition and revenue growth." }
+  ],
+  projects:[
+    { name:"OrgFlow", status:"In Development",
+      desc:"Production backend for a student-org mobile app: PostgreSQL schema + REST APIs on Node/Express/Prisma, deployed on AWS. RAG pipeline over org data using pgvector embeddings + LLM providers.",
+      tech:["Node.js","Express","Prisma","PostgreSQL","pgvector","TypeScript","Python","LangChain","AWS","Docker"], github:"", live:"" },
+    { name:"Full-Stack Data Web App", status:"",
+      desc:"End-to-end data product: ingest → analyze → serve. Python pipeline on the GitHub REST API, NBA advanced-stats EDA in Jupyter/Pandas (1,890 rows), deployed Django app with a Chart.js dashboard.",
+      tech:["Python","Django","Pandas","NumPy","Jupyter","Chart.js","Bootstrap","SQLite"],
+      github:"https://github.com/lukehsalem/Full-Stack-Data-Web-Application", live:"https://youtu.be/9kQBsbywEdc" },
+    { name:"Learning Management System", status:"",
+      desc:"Production-style LMS built from scratch in C# across 7 agile sprints — CLI → .NET MAUI GUI → ASP.NET WebAPI + Entity Framework. Patterns: Singleton, Inheritance, MVC, REST. CI/CD via GitHub Actions.",
+      tech:["C#",".NET MAUI","ASP.NET","Entity Framework","GitHub Actions"],
+      github:"https://github.com/lukehsalem/Learning-Management-System", live:"" },
+    { name:"Crypto API Wallet Manager", status:"",
+      desc:"Python crypto-wallet simulator: deposit/withdraw logic converting coins to live Bitcoin prices via the CoinDesk BPI API. OOP Wallet class, robust error handling, full pytest suite. (CS50 final project.)",
+      tech:["Python","REST API","pytest"],
+      github:"https://github.com/lukehsalem/Cryptocurrency-API-Wallet-Manager", live:"https://youtu.be/0JDaBBGnKoM" },
+    { name:"Agile Final Project", status:"",
+      desc:"Agile lab-planning simulation running the full product-owner / scrum-master / developer workflow — user stories, sprint backlog, and issue tracking on GitHub.",
+      tech:["Agile","Scrum","GitHub Projects"],
+      github:"https://github.com/lukehsalem/Agile-Final-Project", live:"" }
+  ],
+  kpis:[ {n:"2027",l:"B.S. CS · FSU"}, {n:"5",l:"projects"}, {n:"3",l:"roles"}, {n:"2",l:"certs"} ],
+  focusBars:[ {lbl:"Data & Analytics",pct:90},{lbl:"Backend / APIs",pct:82},{lbl:"Full-Stack Web",pct:76},{lbl:"Cloud / DevOps",pct:66},{lbl:"AI / ML pipelines",pct:70} ]
+};
+const TECH = {
+  "Node.js":{bg:"#5FA04E",fg:"#03130a",icon:"nodedotjs",ic:"03130a"},"Express":{bg:"#151515",fg:"#fff",icon:"express",ic:"ffffff"},
+  "Prisma":{bg:"#2D3748",fg:"#fff",icon:"prisma",ic:"ffffff"},"PostgreSQL":{bg:"#4169E1",fg:"#fff",icon:"postgresql",ic:"ffffff"},
+  "pgvector":{bg:"#2F6E64",fg:"#eafff6"},"TypeScript":{bg:"#3178C6",fg:"#fff",icon:"typescript",ic:"ffffff"},
+  "Python":{bg:"#3776AB",fg:"#fff",icon:"python",ic:"ffffff"},"LangChain":{bg:"#1C3C3C",fg:"#fff",icon:"langchain",ic:"ffffff"},
+  "AWS":{bg:"#FF9900",fg:"#201a12",icon:"amazonwebservices",ic:"201a12"},"Docker":{bg:"#2496ED",fg:"#fff",icon:"docker",ic:"ffffff"},
+  "Django":{bg:"#092E20",fg:"#fff",icon:"django",ic:"ffffff"},"Pandas":{bg:"#150458",fg:"#fff",icon:"pandas",ic:"ffffff"},
+  "NumPy":{bg:"#4D77CF",fg:"#fff",icon:"numpy",ic:"ffffff"},"Jupyter":{bg:"#F37626",fg:"#201105",icon:"jupyter",ic:"201105"},
+  "Chart.js":{bg:"#FF6384",fg:"#2a0a12",icon:"chartdotjs",ic:"2a0a12"},"Bootstrap":{bg:"#7952B3",fg:"#fff",icon:"bootstrap",ic:"ffffff"},
+  "SQLite":{bg:"#003B57",fg:"#fff",icon:"sqlite",ic:"ffffff"},"C#":{bg:"#239120",fg:"#fff",icon:"csharp",ic:"ffffff"},
+  ".NET MAUI":{bg:"#512BD4",fg:"#fff",icon:"dotnet",ic:"ffffff"},"ASP.NET":{bg:"#512BD4",fg:"#fff",icon:"dotnet",ic:"ffffff"},
+  "Entity Framework":{bg:"#512BD4",fg:"#e9e2ff"},"GitHub Actions":{bg:"#2088FF",fg:"#fff",icon:"githubactions",ic:"ffffff"},
+  "REST API":{bg:"#2b3a52",fg:"#cfe0ff"},"pytest":{bg:"#0A9EDC",fg:"#03202b",icon:"pytest",ic:"03202b"},
+  "Agile":{bg:"#334155",fg:"#dbe6f5"},"Scrum":{bg:"#334155",fg:"#dbe6f5"},"GitHub Projects":{bg:"#181717",fg:"#fff",icon:"github",ic:"ffffff"}
+};
+function oscarSVG(size){return `
+<svg class="oscar osvg" viewBox="0 0 160 160" width="${size}" height="${size}" role="img" aria-label="Oscar the Lobster" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+ <g class="bob" fill="var(--l)">
+  <rect x="60" y="26" width="6" height="10" fill="var(--d)"/><rect x="54" y="16" width="6" height="10" fill="var(--d)"/><rect x="49" y="8" width="6" height="8" fill="var(--d)"/>
+  <rect x="94" y="26" width="6" height="10" fill="var(--d)"/><rect x="100" y="16" width="6" height="10" fill="var(--d)"/><rect x="106" y="8" width="6" height="8" fill="var(--d)"/>
+  <g class="claw"><rect x="14" y="42" width="26" height="9"/><rect x="14" y="58" width="18" height="9"/><rect x="14" y="42" width="7" height="9" fill="var(--h)"/><rect x="38" y="54" width="18" height="8" fill="var(--d)"/></g>
+  <rect x="120" y="42" width="26" height="9"/><rect x="128" y="58" width="18" height="9"/><rect x="139" y="42" width="7" height="9" fill="var(--h)"/><rect x="104" y="54" width="18" height="8" fill="var(--d)"/>
+  <rect x="56" y="40" width="48" height="26"/><rect x="56" y="40" width="14" height="7" fill="var(--h)"/><rect x="98" y="40" width="6" height="26" fill="var(--d)"/>
+  <rect x="63" y="47" width="13" height="13" fill="#fff"/><rect x="84" y="47" width="13" height="13" fill="#fff"/>
+  <rect x="67" y="51" width="6" height="7" fill="#14181f"/><rect x="88" y="51" width="6" height="7" fill="#14181f"/>
+  <rect class="lid" x="63" y="47" width="13" height="13" fill="var(--l)"/><rect class="lid b" x="84" y="47" width="13" height="13" fill="var(--l)"/>
+  <rect x="58" y="66" width="44" height="15"/><rect x="58" y="66" width="44" height="3" fill="var(--d)"/><rect x="96" y="66" width="6" height="15" fill="var(--d)"/>
+  <rect x="61" y="81" width="38" height="15"/><rect x="61" y="81" width="38" height="3" fill="var(--d)"/><rect x="93" y="81" width="6" height="15" fill="var(--d)"/>
+  <rect x="64" y="96" width="32" height="14"/><rect x="64" y="96" width="32" height="3" fill="var(--d)"/><rect x="90" y="96" width="6" height="14" fill="var(--d)"/>
+  <rect x="50" y="74" width="8" height="7" fill="var(--d)"/><rect x="102" y="74" width="8" height="7" fill="var(--d)"/><rect x="52" y="88" width="8" height="7" fill="var(--d)"/><rect x="100" y="88" width="8" height="7" fill="var(--d)"/>
+  <rect x="64" y="110" width="32" height="10"/><rect x="64" y="110" width="32" height="3" fill="var(--d)"/>
+  <rect x="54" y="120" width="20" height="13"/><rect x="72" y="120" width="16" height="13"/><rect x="86" y="120" width="20" height="13"/>
+  <rect x="54" y="127" width="8" height="6" fill="var(--d)"/><rect x="98" y="127" width="8" height="6" fill="var(--d)"/><rect x="76" y="128" width="8" height="5" fill="var(--d)"/>
+ </g></svg>`;}
+function oscarLaptop(){return `
+<svg class="oscar" viewBox="0 0 200 150" width="150" height="112" role="img" aria-label="Oscar with a laptop" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+ <g class="bob">
+  <rect x="86" y="8" width="6" height="9" fill="var(--d)"/><rect x="80" y="0" width="6" height="9" fill="var(--d)"/><rect x="108" y="8" width="6" height="9" fill="var(--d)"/><rect x="114" y="0" width="6" height="9" fill="var(--d)"/>
+  <rect x="80" y="20" width="40" height="22" fill="var(--l)"/><rect x="80" y="20" width="12" height="6" fill="var(--h)"/>
+  <rect x="86" y="26" width="10" height="10" fill="#fff"/><rect x="104" y="26" width="10" height="10" fill="#fff"/>
+  <rect x="89" y="29" width="5" height="6" fill="#14181f"/><rect x="107" y="29" width="5" height="6" fill="#14181f"/>
+  <rect class="lid" x="86" y="26" width="10" height="10" fill="var(--l)"/><rect class="lid b" x="104" y="26" width="10" height="10" fill="var(--l)"/>
+  <rect x="84" y="42" width="32" height="12" fill="var(--l)"/><rect x="34" y="52" width="20" height="9" fill="var(--l)"/><rect x="146" y="52" width="20" height="9" fill="var(--l)"/>
+ </g>
+ <rect x="50" y="60" width="100" height="60" rx="4" fill="#0e131c" stroke="#2b3850" stroke-width="2"/>
+ <rect x="58" y="70" width="84" height="30" rx="2" fill="#0a0e15" stroke="#1e2634" stroke-width="1"/>
+ <rect id="loadbar" x="62" y="102" width="0" height="6" rx="3" fill="#e5484d"/>
+ <rect x="40" y="118" width="120" height="8" rx="3" fill="#161c28" stroke="#2b3850" stroke-width="1.5"/></svg>`;}
+</script>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const badge=n=>{const t=TECH[n]||{bg:"#232b3a",fg:"#cfd8e6"};const ic=t.icon?`<img src="https://cdn.simpleicons.org/${t.icon}/${t.ic}" alt="" loading="lazy" onerror="this.remove()"/>`:"";return `<span class="badge" style="background:${t.bg};color:${t.fg}">${ic}${esc(n)}</span>`;};
+const linkRow=o=>Object.entries(o).map(([k,v])=>`<a class="oscar-link" data-href="${esc(v)}" data-name="${k}">${k}</a>`).join("");
+
+// heatmap data
+const HEAT=[];for(let x=0;x<51;x++)for(let y=0;y<7;y++){let s=Math.sin(x*12.9898+y*78.233)*43758.5453;let r=s-Math.floor(s);r*=(x>37?1.35:1);HEAT.push(r<0.5?0:r<0.7?1:r<0.85?2:r<0.95?3:4);}
+
+// fill tiles
+$("navlinks").innerHTML=linkRow(SITE.links);
+$("projN").textContent=SITE.projects.length;
+$("projMini").innerHTML=SITE.projects.slice(0,4).map(p=>`<div class="p">${esc(p.name)}${p.status?`<span class="st">dev</span>`:""}<span class="tk">${esc(p.tech[0])}</span></div>`).join("");
+$("kpiMini").innerHTML=SITE.kpis.map(k=>`<div class="k"><div class="n">${k.n}</div><div class="l">${esc(k.l)}</div></div>`).join("");
+$("heatMini").innerHTML=HEAT.filter((_,i)=>i%2===0).map(l=>`<i data-l="${l}"></i>`).join("");
+$("expMini").innerHTML=SITE.experience.map(e=>`<div class="e"><div class="r">${esc(e.role)}</div><div class="o">${esc(e.org)}</div></div>`).join("");
+$("contactLinks").innerHTML=Object.entries(SITE.links).map(([k,v])=>`<a class="oscar-link" data-href="${esc(v)}" data-name="${k}">${k}<span class="muted">↗</span></a>`).join("");
+
+// ===== MODALS =====
+const ov=$("ov"),panelBody=$("panelBody");
+function creds(){return SITE.credentials.map(c=>`<div class="cred"><div class="o">${esc(c.org)}<span class="tg ${/progress/i.test(c.tag)?'prog':''}">${esc(c.tag)}</span></div><div class="ll">${esc(c.label)}</div><div class="nn">${esc(c.note)}</div></div>`).join("");}
+const MODALS={
+  about:()=>`<h2>about</h2><div class="sub">// whoami</div><p class="bio">${esc(SITE.bio)}</p>
+    <div class="creds">${creds()}</div>
+    <div class="chips">${SITE.stack.map(s=>`<span class="chip">${esc(s)}</span>`).join("")}</div>`,
+  projects:()=>`<h2>projects</h2><div class="sub">// ${SITE.projects.length} builds</div>`+SITE.projects.map(p=>{
+    const L=[];if(p.github)L.push(`<a class="oscar-link" data-href="${esc(p.github)}" data-name="${esc(p.name)} repo">code ↗</a>`);
+    if(p.live)L.push(`<a class="oscar-link" data-href="${esc(p.live)}" data-name="${esc(p.name)} demo">demo ↗</a>`);
+    if(!p.github&&!p.live)L.push(`<span class="priv">private · in dev</span>`);
+    return `<div class="pcard"><div class="ct"><h3>${esc(p.name)}</h3>${p.status?`<span class="status">${esc(p.status)}</span>`:""}</div><p class="d">${esc(p.desc)}</p><div class="badges">${p.tech.map(badge).join("")}</div><div class="plinks">${L.join("")}</div></div>`;}).join(""),
+  experience:()=>`<h2>experience</h2><div class="sub">// where I've worked</div><div class="tl">`+SITE.experience.map(e=>`<div class="row"><div class="r1"><span class="role">${esc(e.role)} <span class="muted">@</span> <span style="color:var(--a2)">${esc(e.org)}</span></span><span class="date">${esc(e.date)}</span></div><div class="note">${esc(e.note)}</div></div>`).join("")+`</div>`,
+  stats:()=>`<h2>stats</h2><div class="sub">// by the numbers</div>
+    <div class="kpi-row" style="gap:22px;margin-bottom:14px">${SITE.kpis.map(k=>`<div class="k"><div class="n" style="font-size:24px">${k.n}</div><div class="l">${esc(k.l)}</div></div>`).join("")}</div>
+    <div style="color:var(--muted);font-size:12px;margin-bottom:4px">contribution activity <span style="color:var(--dim)">// sample — wire to live GitHub</span></div>
+    <div class="heatbig">${HEAT.map(l=>`<i data-l="${l}"></i>`).join("")}</div>
+    <div class="legend">less <i style="background:#151b26"></i><i style="background:#4a181b"></i><i style="background:#8f2329"></i><i style="background:#c72f36"></i><i style="background:#ff5a5f"></i> more</div>
+    <div style="color:var(--muted);font-size:12px;margin:16px 0 6px">focus areas <span style="color:var(--dim)">// self-assessed</span></div>
+    ${SITE.focusBars.map(b=>`<div class="bar"><span>${esc(b.lbl)}</span><span class="track"><span class="fill" style="width:${b.pct}%"></span></span><span class="muted" style="text-align:right">${b.pct}%</span></div>`).join("")}`
+};
+function openModal(id){const f=MODALS[id];if(!f)return;panelBody.innerHTML=f();ov.classList.add("on");oscar.peekAt();}
+function closeModal(){ov.classList.remove("on");}
+document.querySelectorAll(".tile.click").forEach(t=>t.addEventListener("click",()=>openModal(t.dataset.modal)));
+$("pclose").addEventListener("click",closeModal);
+ov.addEventListener("click",e=>{if(e.target===ov)closeModal();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+
+// ===== laptop loader on links =====
+const load=$("load");$("loadScene").innerHTML=oscarLaptop();
+function openWithOscar(href,name){const w=window.open(href,"_blank","noopener");$("loadName").textContent=name||"that";
+  load.classList.add("on");const bar=document.getElementById("loadbar");if(bar){bar.setAttribute("width","0");bar.animate([{width:"0"},{width:"76"}],{duration:1000,fill:"forwards"});}
+  setTimeout(()=>{load.classList.remove("on");if(!w)location.href=href;},1150);}
+document.addEventListener("click",e=>{const a=e.target.closest(".oscar-link");if(!a)return;e.preventDefault();openWithOscar(a.dataset.href,a.dataset.name);});
+load.addEventListener("click",()=>load.classList.remove("on"));
+
+// ===== TERMINAL =====
+const history=$("history"),inputline=$("inputline"),cmd=$("cmd"),screen=$("screen");
+function tprint(html){const el=document.createElement("div");el.className="out";el.innerHTML=html;history.appendChild(el);screen.scrollTop=screen.scrollHeight;}
+function pp(t){tprint(`<span class="prompt">luke</span><span class="muted">@</span><span class="path">dev</span><span class="muted">:~$</span> <span class="amber">${esc(t)}</span>`);}
+const CMD={
+  help(){return `commands: <span class="accent">about</span> <span class="accent">projects</span> <span class="accent">experience</span> <span class="accent">stats</span> <span class="accent">contact</span> <span class="accent">oscar</span> <span class="accent">clear</span>`;},
+  about(){openModal("about");return "→ opening about";},
+  projects(){openModal("projects");return "→ opening projects";},
+  experience(){openModal("experience");return "→ opening experience";},
+  stats(){openModal("stats");return "→ opening stats";},
+  contact(){return `email: <a class="oscar-link" data-href="mailto:${esc(SITE.email)}" data-name="email">${esc(SITE.email)}</a>`;},
+  oscar(){oscar.kick();return `🦞 <span class="lob">Oscar</span>: "watch this —" *kicks the ball*`;},
+  clear(){history.innerHTML="";return null;}
+};
+function run(raw){const s=raw.trim();pp(s);const n=s.split(" ")[0].toLowerCase();if(n==="")return;const f=CMD[n];
+  if(f){const o=f();if(o!=null)tprint(o);}else tprint(`<span style="color:var(--red)">command not found: ${esc(n)}</span> · try <span class="amber">help</span>`);}
+tprint(`<span class="muted">welcome to</span> <span class="accent">${SITE.domain}</span> <span class="muted">— type</span> <span class="amber">help</span>`);
+inputline.hidden=false;
+const past=[];let hi=-1;
+cmd.addEventListener("keydown",e=>{if(e.key==="Enter"){const v=cmd.value;if(v.trim()){past.push(v);hi=past.length;}run(v);cmd.value="";}
+  else if(e.key==="ArrowUp"){if(hi>0){hi--;cmd.value=past[hi];e.preventDefault();}}
+  else if(e.key==="ArrowDown"){if(hi<past.length-1){hi++;cmd.value=past[hi];}else{hi=past.length;cmd.value="";}}});
+screen.addEventListener("click",e=>{if(!e.target.closest("a"))cmd.focus();});
+
+// ===== LIVE OSCAR =====
+const oscar=(function(){
+  const el=$("oscar"),ball=$("ball"),bubble=$("bubble"),layer=$("oscarLayer");
+  el.innerHTML=oscarSVG(70);
+  let x=innerWidth*0.5,y=innerHeight*0.68,face=1,busy=false,mouseX=x;
+  const S=70;
+  const bounds=()=>({minx:14,maxx:innerWidth-S-14,miny:innerHeight*0.34,maxy:innerHeight-S-16});
+  function place(){el.style.transform=`translate(${x}px,${y}px) scaleX(${face})`;}
+  place();
+  function walkTo(tx,ty,dur=1700){const b=bounds();tx=Math.max(b.minx,Math.min(b.maxx,tx));ty=Math.max(b.miny,Math.min(b.maxy,ty));
+    face=(tx<x)?-1:1;el.style.transitionDuration=(dur/1000)+"s";el.classList.add("walk");x=tx;y=ty;place();
+    clearTimeout(el._wt);el._wt=setTimeout(()=>el.classList.remove("walk"),dur);}
+  function snap(){el.classList.remove("snap");void el.offsetWidth;el.classList.add("snap");}
+  function say(t){bubble.textContent=t;bubble.style.transform=`translate(${x+8}px,${y-14}px)`;bubble.style.opacity=1;clearTimeout(bubble._t);bubble._t=setTimeout(()=>bubble.style.opacity=0,1400);}
+  function hop(){el.classList.remove("hop");void el.offsetWidth;el.classList.add("hop");}
+  function kick(){
+    if(busy)return;busy=true;
+    const b=bounds();const bx=x+(face>0?54:2),by=y+38;
+    ball.style.opacity=1;ball.style.transform=`translate(${bx}px,${by}px)`;
+    snap();hop();
+    const tx=Math.max(20,Math.min(innerWidth-30, x+face*(180+Math.random()*160)));
+    const ty=Math.max(b.miny+20,Math.min(innerHeight-30, by-40-Math.random()*120));
+    const peak=Math.min(bx,tx)-0; const midx=(bx+tx)/2, midy=Math.min(by,ty)-90;
+    ball.animate([{transform:`translate(${bx}px,${by}px) rotate(0deg)`},
+                  {transform:`translate(${midx}px,${midy}px) rotate(360deg)`,offset:.5},
+                  {transform:`translate(${tx}px,${ty}px) rotate(720deg)`}],
+                 {duration:950,easing:"ease-out",fill:"forwards"});
+    setTimeout(()=>{ball.animate([{opacity:1},{opacity:0}],{duration:500,fill:"forwards"});},1400);
+    setTimeout(()=>busy=false,1200);
+  }
+  // click Oscar → happy
+  el.addEventListener("click",()=>{hop();snap();say(["🦞!","hi!","click!","boop"][Math.floor(Math.random()*4)]);});
+  // face cursor when idle
+  addEventListener("mousemove",e=>{mouseX=e.clientX;if(!el.classList.contains("walk")){face=(mouseX<x+S/2)?-1:1;place();}},{passive:true});
+  // roam loop (max character)
+  function roam(){const b=bounds();const tx=b.minx+Math.random()*(b.maxx-b.minx);const ty=b.miny+Math.random()*(b.maxy-b.miny);
+    walkTo(tx,ty,1400+Math.random()*1200);}
+  setInterval(()=>{if(!busy&&!ov.classList.contains("on"))roam();},2600);
+  setInterval(()=>{if(!busy)snap();},4200);
+  setInterval(()=>{if(!busy&&Math.random()<0.75)kick();},8000);
+  // peek at an open modal (walk near panel bottom-right)
+  function peekAt(){const p=document.querySelector(".panel").getBoundingClientRect();
+    walkTo(Math.min(bounds().maxx,p.right-40),Math.min(bounds().maxy,p.bottom-30),900);setTimeout(()=>{face=-1;place();say("👀");},1000);}
+  addEventListener("resize",()=>{const b=bounds();x=Math.min(x,b.maxx);y=Math.min(y,b.maxy);place();});
+  return {kick,snap,peekAt};
+})();
+</script>
+</body>
+</html>

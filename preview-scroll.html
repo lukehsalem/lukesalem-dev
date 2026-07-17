@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Luke Salem — lukesalem.dev</title>
+<meta name="description" content="Luke Salem — CS @ FSU, Data Analyst II. Projects, experience, and stats." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0b0e14; --bg-2:#0e131c; --bg-3:#111826; --bg-4:#0c1119;
+    --border:#1e2634; --border-2:#2b3850;
+    --text:#cbd5e6; --head:#f2f6fb; --muted:#6f81a0; --dim:#4a5871;
+    --accent:#5cf2b0; --accent-2:#57b6ff; --amber:#f2c14e; --red:#ff6b6b;
+    --lob:#e5484d; --lobD:#b02a2f;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:"Inter",system-ui,-apple-system,sans-serif;
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  html{scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+  body{margin:0;font-family:var(--mono);color:var(--text);font-size:15px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    background:radial-gradient(900px 480px at 82% -10%, #16111a 0%, transparent 55%), var(--bg);}
+  a{color:var(--accent-2);text-decoration:none}
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px}
+  .sec{padding:5.5vh 0}
+  .sec-head{display:flex;align-items:baseline;gap:10px;margin:0 0 16px}
+  .sec-head h2{font-size:15px;margin:0;color:var(--head);font-weight:600}
+  .sec-head h2::before{content:"~/ ";color:var(--lob)}
+  .sec-head .cmt{color:var(--dim);font-size:12.5px}
+  .muted{color:var(--muted)} .accent{color:var(--accent)} .amber{color:var(--amber)} .a2{color:var(--accent-2)} .lob{color:var(--lob)}
+
+  /* ---------- HERO ---------- */
+  header.hero{display:flex;align-items:center;gap:22px;padding:7vh 0 3vh;flex-wrap:wrap}
+  .oscar-wrap{filter:drop-shadow(0 10px 20px rgba(229,72,77,.3))}
+  .brand h1{font-size:clamp(26px,5vw,40px);margin:0;color:var(--head);letter-spacing:-1px;font-weight:700;line-height:1}
+  .brand h1 .dot{color:var(--lob)}
+  .brand .sub{margin:9px 0 0;color:var(--muted);font-size:13.5px}
+  .brand .sub b{color:var(--accent);font-weight:500}
+  .links{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}
+  .links a{font-size:12.5px;color:var(--text);border:1px solid var(--border);border-radius:7px;padding:5px 10px;
+    display:inline-flex;align-items:center;gap:6px;transition:.16s;cursor:pointer}
+  .links a:hover{border-color:var(--lob);color:var(--head);background:rgba(229,72,77,.07)}
+
+  /* ---------- TERMINAL ---------- */
+  .window{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);
+    box-shadow:0 24px 60px -34px rgba(0,0,0,.85);overflow:hidden;opacity:0;transform:translateY(14px)}
+  .titlebar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--border);background:#0f151f}
+  .dot3{width:11px;height:11px;border-radius:50%}.r{background:#ff5f57}.yl{background:#febc2e}.gr{background:#28c840}
+  .title{margin-left:8px;color:var(--muted);font-size:12px}
+  .screen{padding:16px 16px 18px;min-height:150px;font-size:13.5px;line-height:1.55}
+  .line{white-space:pre-wrap;word-break:break-word}
+  #inputline{display:flex;align-items:center;gap:7px;margin-top:2px}
+  #cmd{flex:1;background:transparent;border:none;outline:none;color:var(--text);font:inherit;caret-color:var(--accent)}
+  .prompt{color:var(--accent)}.path{color:var(--accent-2)}
+  .hint{margin-top:14px;color:var(--dim);font-size:12px}
+  .out{margin:4px 0 2px;opacity:0}
+  kbd{background:#1a2230;border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:0 5px;color:var(--text);font-size:11px}
+
+  /* ---------- ABOUT (code block) ---------- */
+  .codeblock{background:var(--bg-4);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 18px;font-size:13.5px;line-height:1.7;overflow:auto}
+  .codeblock .k{color:var(--accent-2)} .codeblock .s{color:var(--accent)} .codeblock .p{color:var(--muted)}
+  .codeblock .key{color:var(--amber)} .codeblock .cm{color:var(--dim)}
+
+  /* ---------- EXPERIENCE ---------- */
+  .exp{border-left:2px solid var(--border);padding-left:16px;margin-left:4px;display:grid;gap:14px}
+  .exp .row{position:relative}
+  .exp .row::before{content:"";position:absolute;left:-23px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--lob);box-shadow:0 0 0 3px var(--bg)}
+  .exp .r1{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:baseline}
+  .exp .role{color:var(--head);font-weight:600;font-size:13.5px}
+  .exp .org{color:var(--a2,var(--accent-2))}
+  .exp .date{color:var(--dim);font-size:12px;white-space:nowrap}
+  .exp .note{color:var(--muted);font-size:12.5px;margin-top:3px}
+
+  /* ---------- PROJECTS ---------- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .card{position:relative;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 16px 15px;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;overflow:visible}
+  .card:hover{transform:translateY(-3px);border-color:var(--border-2);box-shadow:0 20px 44px -30px rgba(229,72,77,.4)}
+  .card .ctop{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+  .card h3{font-size:14.5px;margin:0;color:var(--head);font-weight:600}
+  .card h3::before{content:"› ";color:var(--lob)}
+  .status{font-size:10px;font-weight:600;padding:2px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px;border:1px solid}
+  .status.dev{color:var(--amber);border-color:rgba(242,193,78,.4);background:rgba(242,193,78,.09)}
+  .card .desc{color:var(--muted);font-size:12px;line-height:1.55;margin:0 0 11px}
+  .card .desc::before{content:"// ";color:var(--dim)}
+  .badges{display:flex;flex-wrap:wrap;gap:5px}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500;line-height:1;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+  .badge img{width:12px;height:12px;display:block}
+  .clinks{display:flex;gap:12px;margin-top:11px;font-size:11.5px}
+  .clinks a{color:var(--muted);cursor:pointer;border-bottom:1px solid transparent;transition:.15s}
+  .clinks a:hover{color:var(--lob);border-color:var(--lob)}
+  .clinks .priv{color:var(--dim)}
+  /* Oscar peek */
+  .peek{position:absolute;top:0;right:10px;width:64px;height:64px;pointer-events:none;
+    transform:translateY(8px) scale(.5) rotate(14deg);transform-origin:bottom center;opacity:0;
+    transition:transform .34s cubic-bezier(.34,1.56,.64,1),opacity .24s ease;z-index:3}
+  .card:hover .peek{transform:translateY(-52%) scale(.62) rotate(-5deg);opacity:1}
+
+  /* ---------- STATS ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  @media(max-width:640px){.kpis{grid-template-columns:1fr 1fr}}
+  .kpi{background:var(--bg-3);border:1px solid var(--border);border-radius:10px;padding:12px 12px}
+  .kpi .n{font-size:22px;font-weight:700;color:var(--lob);line-height:1}
+  .kpi .l{font-size:11px;color:var(--muted);margin-top:5px}
+  .statbox{background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:15px 16px;margin-bottom:14px}
+  .statbox .t{font-size:12.5px;color:var(--head);font-weight:600;margin-bottom:12px}
+  .statbox .t .cm{color:var(--dim);font-weight:400}
+  /* heatmap */
+  .heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:3px;overflow-x:auto;padding-bottom:2px}
+  .heat i{width:11px;height:11px;border-radius:2px;background:#151b26}
+  .heat i[data-l="1"]{background:#4a181b}.heat i[data-l="2"]{background:#8f2329}.heat i[data-l="3"]{background:#c72f36}.heat i[data-l="4"]{background:#ff5a5f}
+  .legend{display:flex;align-items:center;gap:6px;justify-content:flex-end;margin-top:9px;color:var(--dim);font-size:11px}
+  .legend i{width:11px;height:11px;border-radius:2px;display:inline-block}
+  /* bars */
+  .bar{display:grid;grid-template-columns:120px 1fr 38px;align-items:center;gap:10px;margin:7px 0;font-size:12px}
+  .bar .lbl{color:var(--text)} .bar .track{height:8px;background:#151b26;border-radius:6px;overflow:hidden}
+  .bar .fill{height:100%;background:linear-gradient(90deg,var(--lobD),var(--lob));border-radius:6px;width:0;transition:width 1s ease}
+  .bar .pct{color:var(--muted);text-align:right}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--border);padding:22px 0 46px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--dim);font-size:12px}
+  footer .s{display:flex;gap:14px} footer a{color:var(--muted);cursor:pointer} footer a:hover{color:var(--lob)}
+
+  /* ---------- OSCAR ---------- */
+  .oscar{--l:#e5484d;--d:#b02a2f;--h:#ff8a8f}
+  .oscar .bob{animation:oscbob 3.2s ease-in-out infinite alternate}
+  @keyframes oscbob{from{transform:translateY(0)}to{transform:translateY(4px)}}
+  .oscar .lid{transform:scaleY(0);transform-box:fill-box;transform-origin:top;animation:oscblink 5.4s infinite}
+  .oscar .lid.b{animation-delay:.12s}
+  @keyframes oscblink{0%,93%,100%{transform:scaleY(0)}95%,98%{transform:scaleY(1)}}
+  .oscar .claw-l{transform-box:fill-box;transform-origin:100% 50%;animation:clawsnap 4.6s ease-in-out infinite}
+  @keyframes clawsnap{0%,80%,100%{transform:rotate(0)}86%{transform:rotate(-15deg)}92%{transform:rotate(-2deg)}}
+  @media(prefers-reduced-motion:reduce){.oscar *{animation:none!important}}
+
+  /* ---------- Oscar laptop loader ---------- */
+  #loader{position:fixed;inset:0;background:rgba(7,9,14,.72);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;z-index:50}
+  #loader.on{display:flex}
+  .loadcard{background:var(--bg-2);border:1px solid var(--border-2);border-radius:16px;padding:22px 26px;text-align:center;box-shadow:0 30px 80px -20px #000}
+  .loadcard .cap{font-size:12.5px;color:var(--muted);margin-top:10px}
+  .loadcard .cap b{color:var(--lob);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="oscar-wrap" id="oscarSlot"></div>
+    <div class="brand">
+      <h1>luke salem<span class="dot">_</span></h1>
+      <p class="sub">CS @ FSU '27 · <b>Data Analyst II</b> · software + data + finance<br/><span class="lob">Oscar</span> runs the place — hover a project, he'll peek.</p>
+      <div class="links" id="heroLinks"></div>
+    </div>
+  </header>
+
+  <!-- ===== TERMINAL ===== -->
+  <section class="window" id="window">
+    <div class="titlebar"><span class="dot3 r"></span><span class="dot3 yl"></span><span class="dot3 gr"></span><span class="title">luke@lukesalem.dev — zsh</span></div>
+    <div class="screen" id="screen" role="log" aria-live="polite">
+      <div id="history"></div>
+      <div id="inputline" hidden><span class="prompt">luke@lukesalem.dev</span><span class="muted">:</span><span class="path">~</span><span class="muted">$</span>
+        <input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" /></div>
+      <p class="hint" id="hint" hidden>try <span class="amber">about</span>, <span class="amber">experience</span>, <span class="amber">projects</span>, <span class="amber">stats</span> · <kbd>Enter</kbd></p>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="sec" id="about">
+    <div class="sec-head"><h2>about</h2><span class="cmt">// whoami</span></div>
+    <div class="codeblock" id="aboutBlock"></div>
+  </section>
+
+  <!-- ===== EXPERIENCE ===== -->
+  <section class="sec" id="experience">
+    <div class="sec-head"><h2>experience</h2><span class="cmt">// where I've worked</span></div>
+    <div class="exp" id="expList"></div>
+  </section>
+
+  <!-- ===== PROJECTS ===== -->
+  <section class="sec" id="projects">
+    <div class="sec-head"><h2>projects</h2><span class="cmt" id="projCount"></span></div>
+    <div class="grid" id="projectList"></div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section class="sec" id="stats">
+    <div class="sec-head"><h2>stats</h2><span class="cmt">// by the numbers</span></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="statbox">
+      <div class="t">contribution activity <span class="cm">// sample — wire to live GitHub</span></div>
+      <div class="heat" id="heat"></div>
+      <div class="legend">less <i style="background:#151b26"></i><i style="background:#4a181b"></i><i style="background:#8f2329"></i><i style="background:#c72f36"></i><i style="background:#ff5a5f"></i> more</div>
+    </div>
+    <div class="statbox">
+      <div class="t">focus areas <span class="cm">// self-assessed</span></div>
+      <div id="bars"></div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <span>© <span id="yr"></span> luke salem · built with a lobster 🦞</span>
+    <span class="s" id="footLinks"></span>
+  </footer>
+</div>
+
+<!-- Oscar laptop loader -->
+<div id="loader"><div class="loadcard"><div id="loaderScene"></div><div class="cap">Oscar's opening <b id="loaderName">that link</b> for you…</div></div></div>
+
+<!-- ============ CONTENT — edit here ============ -->
+<script>
+const SITE = {
+  name:"Luke Salem", grad:"May 2027", domain:"lukesalem.dev",
+  email:"lhs23b@fsu.edu",
+  links:{ github:"https://github.com/lukehsalem", linkedin:"https://linkedin.com/in/lukehsalem", email:"mailto:lhs23b@fsu.edu" },
+
+  about:{
+    name:"Luke Salem",
+    edu:"B.S. Computer Science, FSU '27",
+    now:"Data Analyst II @ FL Office of Insurance Regulation",
+    focus:["software","data & analytics","finance"],
+    stack:["Python","SQL / SAS","C#","TypeScript","AWS"],
+    building:"OrgFlow — AI-assisted platform for student orgs",
+    certs:["IBM Agile & Scrum","CS50 Python (Harvard)"]
+  },
+
+  experience:[
+    { role:"Data Analyst II", org:"FL Office of Insurance Regulation", date:"Jun 2026 – Present",
+      note:"Regulatory & market data analysis for the Life & Health Product Review unit — statistical analysis, reporting, and process automation; reviewing insurer filings that use predictive models, SAS, and AI/ML." },
+    { role:"Data Mining Research", org:"OUYANG Group · Vanderbilt University", date:"Mar 2026 – Present",
+      note:"Extract & annotate battery-materials data from scientific literature into standardized schemas; curate training data for an ML materials-property Literature Mining Database." },
+    { role:"Founder & Owner", org:"Luke Salem Copywriting", date:"Jun 2024 – Jun 2025",
+      note:"Founded a digital marketing service (copywriting + email marketing) driving client acquisition and revenue growth." }
+  ],
+
+  projects:[
+    { name:"OrgFlow", status:"In Development",
+      desc:"Production backend for a student-org mobile app: PostgreSQL schema + REST APIs on Node/Express/Prisma, deployed on AWS. RAG pipeline over org data using pgvector embeddings + LLM providers.",
+      tech:["Node.js","Express","Prisma","PostgreSQL","pgvector","TypeScript","Python","LangChain","AWS","Docker"], github:"", live:"" },
+    { name:"Full-Stack Data Web App", status:"",
+      desc:"End-to-end data product: ingest → analyze → serve. Python pipeline on the GitHub REST API, NBA advanced-stats EDA in Jupyter/Pandas (1,890 rows), deployed Django app with a Chart.js dashboard.",
+      tech:["Python","Django","Pandas","NumPy","Jupyter","Chart.js","Bootstrap","SQLite"],
+      github:"https://github.com/lukehsalem/Full-Stack-Data-Web-Application", live:"https://youtu.be/9kQBsbywEdc" },
+    { name:"Learning Management System", status:"",
+      desc:"Production-style LMS built from scratch in C# across 7 agile sprints — CLI → .NET MAUI GUI → ASP.NET WebAPI + Entity Framework. Patterns: Singleton, Inheritance, MVC, REST. CI/CD via GitHub Actions.",
+      tech:["C#",".NET MAUI","ASP.NET","Entity Framework","GitHub Actions"],
+      github:"https://github.com/lukehsalem/Learning-Management-System", live:"" },
+    { name:"Crypto API Wallet Manager", status:"",
+      desc:"Python crypto-wallet simulator: deposit/withdraw logic converting coins to live Bitcoin prices via the CoinDesk BPI API. OOP Wallet class, robust error handling, full pytest suite. (CS50 final project.)",
+      tech:["Python","REST API","pytest"],
+      github:"https://github.com/lukehsalem/Cryptocurrency-API-Wallet-Manager", live:"https://youtu.be/0JDaBBGnKoM" },
+    { name:"Agile Final Project", status:"",
+      desc:"Agile lab-planning simulation running the full product-owner / scrum-master / developer workflow — user stories, sprint backlog, and issue tracking on GitHub.",
+      tech:["Agile","Scrum","GitHub Projects"],
+      github:"https://github.com/lukehsalem/Agile-Final-Project", live:"" }
+  ],
+
+  kpis:[
+    { n:"2027", l:"B.S. CS · FSU" },
+    { n:"5", l:"featured projects" },
+    { n:"3", l:"roles: analyst · research · founder" },
+    { n:"2", l:"certs: IBM · CS50" }
+  ],
+  focusBars:[
+    { lbl:"Data & Analytics", pct:90 },
+    { lbl:"Backend / APIs", pct:82 },
+    { lbl:"Full-Stack Web", pct:76 },
+    { lbl:"Cloud / DevOps", pct:66 },
+    { lbl:"AI / ML pipelines", pct:70 }
+  ]
+};
+
+const TECH = {
+  "Node.js":{bg:"#5FA04E",fg:"#03130a",icon:"nodedotjs",ic:"03130a"},
+  "Express":{bg:"#151515",fg:"#fff",icon:"express",ic:"ffffff"},
+  "Prisma":{bg:"#2D3748",fg:"#fff",icon:"prisma",ic:"ffffff"},
+  "PostgreSQL":{bg:"#4169E1",fg:"#fff",icon:"postgresql",ic:"ffffff"},
+  "pgvector":{bg:"#2F6E64",fg:"#eafff6"},
+  "TypeScript":{bg:"#3178C6",fg:"#fff",icon:"typescript",ic:"ffffff"},
+  "Python":{bg:"#3776AB",fg:"#fff",icon:"python",ic:"ffffff"},
+  "LangChain":{bg:"#1C3C3C",fg:"#fff",icon:"langchain",ic:"ffffff"},
+  "AWS":{bg:"#FF9900",fg:"#201a12",icon:"amazonwebservices",ic:"201a12"},
+  "Docker":{bg:"#2496ED",fg:"#fff",icon:"docker",ic:"ffffff"},
+  "Django":{bg:"#092E20",fg:"#fff",icon:"django",ic:"ffffff"},
+  "Pandas":{bg:"#150458",fg:"#fff",icon:"pandas",ic:"ffffff"},
+  "NumPy":{bg:"#4D77CF",fg:"#fff",icon:"numpy",ic:"ffffff"},
+  "Jupyter":{bg:"#F37626",fg:"#201105",icon:"jupyter",ic:"201105"},
+  "Chart.js":{bg:"#FF6384",fg:"#2a0a12",icon:"chartdotjs",ic:"2a0a12"},
+  "Bootstrap":{bg:"#7952B3",fg:"#fff",icon:"bootstrap",ic:"ffffff"},
+  "SQLite":{bg:"#003B57",fg:"#fff",icon:"sqlite",ic:"ffffff"},
+  "C#":{bg:"#239120",fg:"#fff",icon:"csharp",ic:"ffffff"},
+  ".NET MAUI":{bg:"#512BD4",fg:"#fff",icon:"dotnet",ic:"ffffff"},
+  "ASP.NET":{bg:"#512BD4",fg:"#fff",icon:"dotnet",ic:"ffffff"},
+  "Entity Framework":{bg:"#512BD4",fg:"#e9e2ff"},
+  "GitHub Actions":{bg:"#2088FF",fg:"#fff",icon:"githubactions",ic:"ffffff"},
+  "REST API":{bg:"#2b3a52",fg:"#cfe0ff"},
+  "pytest":{bg:"#0A9EDC",fg:"#03202b",icon:"pytest",ic:"03202b"},
+  "Agile":{bg:"#334155",fg:"#dbe6f5"},
+  "Scrum":{bg:"#334155",fg:"#dbe6f5"},
+  "GitHub Projects":{bg:"#181717",fg:"#fff",icon:"github",ic:"ffffff"}
+};
+
+function oscarSVG(cls){return `
+<svg class="oscar" viewBox="0 0 160 160" width="118" height="118" role="img" aria-label="Oscar the Lobster" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+ <g class="bob" fill="var(--l)">
+  <rect x="60" y="26" width="6" height="10" fill="var(--d)"/><rect x="54" y="16" width="6" height="10" fill="var(--d)"/><rect x="49" y="8" width="6" height="8" fill="var(--d)"/>
+  <rect x="94" y="26" width="6" height="10" fill="var(--d)"/><rect x="100" y="16" width="6" height="10" fill="var(--d)"/><rect x="106" y="8" width="6" height="8" fill="var(--d)"/>
+  <g class="${cls==='claw'?'claw-l':''}"><rect x="14" y="42" width="26" height="9"/><rect x="14" y="58" width="18" height="9"/><rect x="14" y="42" width="7" height="9" fill="var(--h)"/><rect x="38" y="54" width="18" height="8" fill="var(--d)"/></g>
+  <rect x="120" y="42" width="26" height="9"/><rect x="128" y="58" width="18" height="9"/><rect x="139" y="42" width="7" height="9" fill="var(--h)"/><rect x="104" y="54" width="18" height="8" fill="var(--d)"/>
+  <rect x="56" y="40" width="48" height="26"/><rect x="56" y="40" width="14" height="7" fill="var(--h)"/><rect x="98" y="40" width="6" height="26" fill="var(--d)"/>
+  <rect x="63" y="47" width="13" height="13" fill="#fff"/><rect x="84" y="47" width="13" height="13" fill="#fff"/>
+  <rect x="67" y="51" width="6" height="7" fill="#14181f"/><rect x="88" y="51" width="6" height="7" fill="#14181f"/>
+  <rect class="lid" x="63" y="47" width="13" height="13" fill="var(--l)"/><rect class="lid b" x="84" y="47" width="13" height="13" fill="var(--l)"/>
+  <rect x="58" y="66" width="44" height="15"/><rect x="58" y="66" width="44" height="3" fill="var(--d)"/><rect x="96" y="66" width="6" height="15" fill="var(--d)"/>
+  <rect x="61" y="81" width="38" height="15"/><rect x="61" y="81" width="38" height="3" fill="var(--d)"/><rect x="93" y="81" width="6" height="15" fill="var(--d)"/>
+  <rect x="64" y="96" width="32" height="14"/><rect x="64" y="96" width="32" height="3" fill="var(--d)"/><rect x="90" y="96" width="6" height="14" fill="var(--d)"/>
+  <rect x="50" y="74" width="8" height="7" fill="var(--d)"/><rect x="102" y="74" width="8" height="7" fill="var(--d)"/><rect x="52" y="88" width="8" height="7" fill="var(--d)"/><rect x="100" y="88" width="8" height="7" fill="var(--d)"/>
+  <rect x="64" y="110" width="32" height="10"/><rect x="64" y="110" width="32" height="3" fill="var(--d)"/>
+  <rect x="54" y="120" width="20" height="13"/><rect x="72" y="120" width="16" height="13"/><rect x="86" y="120" width="20" height="13"/>
+  <rect x="54" y="127" width="8" height="6" fill="var(--d)"/><rect x="98" y="127" width="8" height="6" fill="var(--d)"/><rect x="76" y="128" width="8" height="5" fill="var(--d)"/>
+ </g>
+</svg>`;}
+
+function oscarLaptop(){return `
+<svg class="oscar" viewBox="0 0 200 150" width="150" height="112" role="img" aria-label="Oscar with a laptop" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+ <g class="bob">
+  <rect x="86" y="8" width="6" height="9" fill="var(--d)"/><rect x="80" y="0" width="6" height="9" fill="var(--d)"/>
+  <rect x="108" y="8" width="6" height="9" fill="var(--d)"/><rect x="114" y="0" width="6" height="9" fill="var(--d)"/>
+  <rect x="80" y="20" width="40" height="22" fill="var(--l)"/><rect x="80" y="20" width="12" height="6" fill="var(--h)"/>
+  <rect x="86" y="26" width="10" height="10" fill="#fff"/><rect x="104" y="26" width="10" height="10" fill="#fff"/>
+  <rect x="89" y="29" width="5" height="6" fill="#14181f"/><rect x="107" y="29" width="5" height="6" fill="#14181f"/>
+  <rect class="lid" x="86" y="26" width="10" height="10" fill="var(--l)"/><rect class="lid b" x="104" y="26" width="10" height="10" fill="var(--l)"/>
+  <rect x="84" y="42" width="32" height="12" fill="var(--l)"/>
+  <rect x="34" y="52" width="20" height="9" fill="var(--l)"/><rect x="146" y="52" width="20" height="9" fill="var(--l)"/>
+ </g>
+ <rect x="50" y="60" width="100" height="60" rx="4" fill="#0e131c" stroke="#2b3850" stroke-width="2"/>
+ <rect x="58" y="70" width="84" height="30" rx="2" fill="#0a0e15"/>
+ <rect x="58" y="70" width="84" height="30" rx="2" fill="none" stroke="#1e2634" stroke-width="1"/>
+ <rect id="loadbar" x="62" y="102" width="0" height="6" rx="3" fill="#e5484d"/>
+ <rect x="40" y="118" width="120" height="8" rx="3" fill="#161c28" stroke="#2b3850" stroke-width="1.5"/>
+</svg>`;}
+</script>
+
+<!-- ============ engine ============ -->
+<script type="module">
+import { gsap } from "https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm";
+import { ScrollTrigger } from "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger/+esm";
+import Lenis from "https://cdn.jsdelivr.net/npm/lenis@1.1.13/+esm";
+gsap.registerPlugin(ScrollTrigger);
+const lenis = new Lenis({duration:1.1,smoothWheel:true});
+function raf(t){lenis.raf(t);requestAnimationFrame(raf);} requestAnimationFrame(raf);
+lenis.on("scroll",ScrollTrigger.update);
+const $=(id)=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+$("oscarSlot").innerHTML=oscarSVG("claw");
+$("yr").textContent=new Date().getFullYear();
+
+// hero + footer links (with Oscar loader)
+const linkRow=(o)=>Object.entries(o).map(([k,v])=>`<a class="oscar-link" data-href="${esc(v)}" data-name="${k}">${k}</a>`).join("");
+$("heroLinks").innerHTML=linkRow(SITE.links);
+$("footLinks").innerHTML=linkRow(SITE.links);
+
+// about code block
+(function(){const a=SITE.about;
+  const arr=x=>"["+x.map(s=>`<span class="s">"${esc(s)}"</span>`).join(", ")+"]";
+  $("aboutBlock").innerHTML=
+`<span class="k">const</span> <span class="key">luke</span> <span class="p">=</span> {
+  <span class="key">name</span><span class="p">:</span> <span class="s">"${esc(a.name)}"</span><span class="p">,</span>
+  <span class="key">edu</span><span class="p">:</span> <span class="s">"${esc(a.edu)}"</span><span class="p">,</span>
+  <span class="key">now</span><span class="p">:</span> <span class="s">"${esc(a.now)}"</span><span class="p">,</span>
+  <span class="key">focus</span><span class="p">:</span> ${arr(a.focus)}<span class="p">,</span>
+  <span class="key">stack</span><span class="p">:</span> ${arr(a.stack)}<span class="p">,</span>
+  <span class="key">building</span><span class="p">:</span> <span class="s">"${esc(a.building)}"</span><span class="p">,</span>
+  <span class="key">certs</span><span class="p">:</span> ${arr(a.certs)}
+}`;})();
+
+// experience
+$("expList").innerHTML=SITE.experience.map(e=>
+`<div class="row"><div class="r1"><span class="role">${esc(e.role)} <span class="muted">@</span> <span class="a2">${esc(e.org)}</span></span><span class="date">${esc(e.date)}</span></div><div class="note">${esc(e.note)}</div></div>`).join("");
+
+// projects
+function badge(name){const t=TECH[name]||{bg:"#232b3a",fg:"#cfd8e6"};
+  const ic=t.icon?`<img src="https://cdn.simpleicons.org/${t.icon}/${t.ic}" alt="" loading="lazy" onerror="this.remove()"/>`:"";
+  return `<span class="badge" style="background:${t.bg};color:${t.fg}">${ic}${esc(name)}</span>`;}
+function card(p){
+  const st=p.status?`<span class="status dev">${esc(p.status)}</span>`:"";
+  const L=[];
+  if(p.github)L.push(`<a class="oscar-link" data-href="${esc(p.github)}" data-name="${esc(p.name)} repo">code ↗</a>`);
+  if(p.live)L.push(`<a class="oscar-link" data-href="${esc(p.live)}" data-name="${esc(p.name)} demo">demo ↗</a>`);
+  if(!p.github&&!p.live)L.push(`<span class="priv">private · in dev</span>`);
+  return `<article class="card"><div class="peek">${oscarSVG("")}</div>
+    <div class="ctop"><h3>${esc(p.name)}</h3>${st}</div>
+    <p class="desc">${esc(p.desc)}</p>
+    <div class="badges">${p.tech.map(badge).join("")}</div>
+    <div class="clinks">${L.join("")}</div></article>`;}
+$("projectList").innerHTML=SITE.projects.map(card).join("");
+$("projCount").textContent=`// ${SITE.projects.length} builds`;
+
+// stats — kpis
+$("kpis").innerHTML=SITE.kpis.map(k=>`<div class="kpi"><div class="n">${esc(k.n)}</div><div class="l">${esc(k.l)}</div></div>`).join("");
+// heatmap (deterministic sample)
+(function(){let h="";const W=51;for(let x=0;x<W;x++)for(let y=0;y<7;y++){
+  const seed=Math.sin(x*12.9898+y*78.233)*43758.5453; let r=seed-Math.floor(seed);
+  r*= (x>W-14?1.35:1); let lv=r<0.5?0:r<0.7?1:r<0.85?2:r<0.95?3:4;
+  h+=`<i data-l="${lv}"></i>`;} $("heat").innerHTML=h;})();
+// bars
+$("bars").innerHTML=SITE.focusBars.map(b=>
+`<div class="bar"><span class="lbl">${esc(b.lbl)}</span><span class="track"><span class="fill" data-p="${b.pct}"></span></span><span class="pct">${b.pct}%</span></div>`).join("");
+
+// reveals
+gsap.utils.toArray(".card,.statbox,.kpi,.exp .row,.codeblock").forEach(el=>
+  gsap.fromTo(el,{opacity:0,y:20},{opacity:1,y:0,duration:.5,ease:"power2.out",scrollTrigger:{trigger:el,start:"top 90%"}}));
+// animate bars on scroll
+ScrollTrigger.create({trigger:"#bars",start:"top 85%",once:true,onEnter(){
+  document.querySelectorAll(".fill").forEach(f=>f.style.width=f.dataset.p+"%");}});
+
+// ---------- Oscar laptop loader ----------
+const loader=$("loader");
+$("loaderScene").innerHTML=oscarLaptop();
+function openWithOscar(href,name){
+  const win=window.open(href,"_blank","noopener");   // opens within the click gesture
+  $("loaderName").textContent=name||"that link";
+  loader.classList.add("on");
+  const bar=document.getElementById("loadbar");
+  if(bar){bar.setAttribute("width","0");gsap.to(bar,{attr:{width:76},duration:1.05,ease:"power1.inOut"});}
+  setTimeout(()=>{loader.classList.remove("on"); if(!win)location.href=href;},1200);
+}
+document.addEventListener("click",e=>{const a=e.target.closest(".oscar-link"); if(!a)return;
+  e.preventDefault(); openWithOscar(a.dataset.href,a.dataset.name);});
+loader.addEventListener("click",()=>loader.classList.remove("on"));
+
+// ---------- terminal ----------
+const history=$("history"),inputline=$("inputline"),hint=$("hint"),cmd=$("cmd"),screen=$("screen");
+function print(html,animate=true){const el=document.createElement("div");el.className="out line";el.innerHTML=html;history.appendChild(el);
+  if(animate)gsap.to(el,{opacity:1,y:0,duration:.3,ease:"power2.out",startAt:{y:6}});else el.style.opacity=1;}
+function pp(t){print(`<span class="prompt">luke@lukesalem.dev</span><span class="muted">:</span><span class="path">~</span><span class="muted">$</span> <span class="amber">${esc(t)}</span>`,false);}
+const go=(id)=>lenis.scrollTo(id,{duration:1.0,offset:-14});
+const commands={
+  help(){return `commands:
+  <span class="accent">about</span>      <span class="accent">experience</span>   <span class="accent">projects</span>
+  <span class="accent">stats</span>      <span class="accent">contact</span>      <span class="accent">oscar</span>       <span class="accent">clear</span>`;},
+  about(){go("#about");return "→ scrolling to about";},
+  experience(){go("#experience");return "→ scrolling to experience";},
+  projects(){go("#projects");return SITE.projects.map(p=>`<span class="lob">›</span> ${esc(p.name)}${p.status?` <span class="muted">(${esc(p.status)})</span>`:""}`).join("\n");},
+  stats(){go("#stats");return "→ scrolling to stats";},
+  skills(){return SITE.about.stack.join(" · ");},
+  contact(){return `email: <a class="oscar-link" data-href="mailto:${esc(SITE.email)}" data-name="email">${esc(SITE.email)}</a>`;},
+  oscar(){return `🦞 <span class="lob">Oscar</span>: "hover a project card — i'll peek. click a link — i'll boot the laptop."`;},
+  clear(){history.innerHTML="";return null;},
+};
+function run(raw){const s=raw.trim();pp(s);const n=s.split(" ")[0].toLowerCase();if(n==="")return;
+  const fn=commands[n];if(fn){const o=fn();if(o!=null)print(o);}else print(`<span style="color:var(--red)">command not found: ${esc(n)}</span> · try <span class="amber">help</span>`);}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function boot(){await gsap.to("#window",{opacity:1,y:0,duration:.55,ease:"power3.out"});
+  const b=[`<span class="muted">welcome to</span> <span class="accent">${SITE.domain}</span> <span class="muted">— type</span> <span class="amber">help</span>`,``];
+  for(const l of b){print(l,false);await sleep(160);} inputline.hidden=false;hint.hidden=false;}
+const past=[];let hi=-1;
+cmd.addEventListener("keydown",e=>{if(e.key==="Enter"){const v=cmd.value;if(v.trim()){past.push(v);hi=past.length;}run(v);cmd.value="";}
+  else if(e.key==="ArrowUp"){if(hi>0){hi--;cmd.value=past[hi];e.preventDefault();}}
+  else if(e.key==="ArrowDown"){if(hi<past.length-1){hi++;cmd.value=past[hi];}else{hi=past.length;cmd.value="";}}});
+screen.addEventListener("click",e=>{if(!e.target.closest("a"))cmd.focus();});
+boot();
+</script>
+</body>
+</html>
