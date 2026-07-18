@@ -79,11 +79,12 @@ export const site = {
   ],
   // language breakdown across public repos (approx, from GitHub repo stats)
   langs: [
-    { lbl: "Python", pct: 42 },
-    { lbl: "C#", pct: 24 },
-    { lbl: "Jupyter / EDA", pct: 22 },
-    { lbl: "TypeScript", pct: 8 },
-    { lbl: "HTML / CSS", pct: 4 },
+    { lbl: "Python", pct: 34 },
+    { lbl: "HTML", pct: 22 },
+    { lbl: "C#", pct: 15 },
+    { lbl: "Jupyter / EDA", pct: 12 },
+    { lbl: "CSS", pct: 11 },
+    { lbl: "TypeScript", pct: 6 },
   ],
   // full skills list for the skills section
   skills: ["Python", "SQL", "SAS", "C#", "C++", "Java", "TypeScript", "Pandas", "NumPy", "PostgreSQL", "pgvector", "Django", "Node.js", "React Native", "AWS", "Docker", "Chart.js", "Jupyter", "Git", "Linux"],

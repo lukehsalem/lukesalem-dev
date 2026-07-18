@@ -1,7 +1,7 @@
 :root{
     --bg:#0a0d13; --bg-2:#0e131c; --bg-3:#111826; --bg-4:#0c1119;
     --border:#1d2634; --border-2:#2b3850;
-    --text:#cbd5e6; --head:#f2f6fb; --muted:#6f81a0; --dim:#465571;
+    --text:#cbd5e6; --head:#f2f6fb; --muted:#8b9ab6; --dim:#465571;
     --accent:#5cf2b0; --a2:#57b6ff; --amber:#f2c14e; --red:#ff6b6b; --lob:#e5484d;
     --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace; --radius:12px;
   }
@@ -17,7 +17,7 @@
 
   /* HERO */
   .hero{display:grid;grid-template-columns:1fr 1.05fr;gap:20px;padding:6vh 0 3vh;align-items:stretch}
-  @media(max-width:780px){.hero{grid-template-columns:1fr}}
+  @media(max-width:780px){.hero{grid-template-columns:1fr}.namerow{justify-content:center}.intro{align-items:center;text-align:center}.links{justify-content:center}}
   .window{background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 24px 60px -34px rgba(0,0,0,.85);display:flex;flex-direction:column;min-height:300px}
   .titlebar{display:flex;align-items:center;gap:7px;padding:10px 14px;border-bottom:1px solid var(--border);background:#0f151f}
   .d3{width:11px;height:11px;border-radius:50%}.rr{background:#ff5f57}.yy{background:#febc2e}.gg{background:#28c840}
@@ -71,7 +71,7 @@
   .card .ct{display:flex;align-items:center;gap:8px;margin-bottom:6px}
   .card h3{font-size:15.4px;margin:0;color:var(--head);font-weight:600}.card h3::before{content:"› ";color:var(--lob)}
   .status{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px;color:var(--amber);border:1px solid rgba(242,193,78,.4);background:rgba(242,193,78,.09)}
-  .card .d{color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 10px}.card .d::before{content:"// ";color:var(--dim)}
+  .card .d{color:var(--muted);font-size:13px;line-height:1.55;margin:0 0 10px}
   .badges{display:flex;flex-wrap:wrap;gap:5px}
   .badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:12.1px;font-weight:500;line-height:1;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
   .badge img{width:12px;height:12px;display:block}

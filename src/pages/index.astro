@@ -48,22 +48,22 @@ const year = new Date().getFullYear();
   </div>
 
   <section class="sec">
-    <div class="sec-head"><h2>credentials</h2><span class="cmt">// the receipts</span></div>
+    <div class="sec-head"><h2>credentials</h2></div>
     <div class="creds" id="creds"></div>
   </section>
 
   <section class="sec">
-    <div class="sec-head"><h2>experience</h2><span class="cmt">// roles</span></div>
+    <div class="sec-head"><h2>experience</h2></div>
     <div class="tl" id="exp"></div>
   </section>
 
   <section class="sec">
-    <div class="sec-head"><h2>projects</h2><span class="cmt" id="projCmt"></span></div>
+    <div class="sec-head"><h2>projects</h2></div>
     <div class="grid" id="projects"></div>
   </section>
 
   <section class="sec">
-    <div class="sec-head"><h2>skills</h2><span class="cmt">// the toolbox</span></div>
+    <div class="sec-head"><h2>skills</h2></div>
     <div class="chips" id="skills"></div>
   </section>
 
@@ -71,7 +71,7 @@ const year = new Date().getFullYear();
     <div class="sec-head"><h2>stats</h2><span class="cmt">// real, from GitHub</span></div>
     <div class="kpis" id="kpis"></div>
     <div class="statbox">
-      <div class="t">contribution graph <span class="cm">{`// Feb 2026 → now · github.com/${site.github}`}</span></div>
+      <div class="t">contribution graph <span class="cm">// pulled live from GitHub API</span></div>
       <div class="ghcrop"><img src={`https://ghchart.rshah.org/e5484d/${site.github}`} alt={`${site.name} GitHub contributions`}
         onerror="this.parentElement.style.display='none';this.parentElement.nextElementSibling.style.display='block'" /></div>
       <div class="ghfail" style="display:none">contribution graph loads live from GitHub on the deployed site.</div>
@@ -118,9 +118,9 @@ function flatOscar(size){ return `
 
 function credIcon(k){ const S='<svg viewBox="0 0 24 24" width="34" height="34" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">';
  const I = {
-  vanderbilt:`${S}<rect x="1" y="1" width="22" height="22" rx="3" fill="#1c1d22"/><rect x="5" y="6" width="3" height="7" fill="#caa14a"/><rect x="7" y="12" width="3" height="4" fill="#caa14a"/><rect x="10" y="15" width="4" height="3" fill="#caa14a"/><rect x="14" y="12" width="3" height="4" fill="#caa14a"/><rect x="16" y="6" width="3" height="7" fill="#caa14a"/></svg>`,
+  vanderbilt:`${S}<rect x="1" y="1" width="22" height="22" rx="3" fill="#1c1d22"/><rect x="5" y="5" width="3" height="4" fill="#caa14a"/><rect x="7" y="9" width="3" height="4" fill="#caa14a"/><rect x="9" y="13" width="3" height="3" fill="#caa14a"/><rect x="11" y="15" width="2" height="3" fill="#caa14a"/><rect x="16" y="5" width="3" height="4" fill="#caa14a"/><rect x="14" y="9" width="3" height="4" fill="#caa14a"/><rect x="12" y="13" width="3" height="3" fill="#caa14a"/></svg>`,
   ibm:`${S}<rect x="2" y="5" width="20" height="2" fill="#1F70C1"/><rect x="2" y="8" width="20" height="2" fill="#1F70C1"/><rect x="2" y="11" width="20" height="2" fill="#1F70C1"/><rect x="2" y="14" width="20" height="2" fill="#1F70C1"/><rect x="2" y="17" width="20" height="2" fill="#1F70C1"/></svg>`,
-  harvard:`${S}<rect x="4" y="3" width="16" height="11" fill="#A51C30"/><rect x="5" y="14" width="14" height="3" fill="#A51C30"/><rect x="7" y="17" width="10" height="3" fill="#A51C30"/><rect x="10" y="20" width="4" height="2" fill="#A51C30"/><rect x="6" y="5" width="4" height="2" fill="#fff"/><rect x="14" y="5" width="4" height="2" fill="#fff"/><rect x="10" y="9" width="4" height="2" fill="#fff"/></svg>`,
+  harvard:`${S}<rect x="5" y="3" width="14" height="9" fill="#A51C30"/><rect x="6" y="12" width="12" height="2" fill="#A51C30"/><rect x="8" y="14" width="8" height="2" fill="#A51C30"/><rect x="10" y="16" width="4" height="2" fill="#A51C30"/><rect x="7" y="5" width="3" height="2" fill="#fff"/><rect x="14" y="5" width="3" height="2" fill="#fff"/><rect x="10" y="8" width="4" height="2" fill="#fff"/></svg>`,
   stanford:`${S}<rect x="11" y="15" width="2" height="6" fill="#6b4a2b"/><rect x="9" y="4" width="6" height="3" fill="#2E7D32"/><rect x="7" y="7" width="10" height="3" fill="#2E7D32"/><rect x="6" y="10" width="12" height="3" fill="#2E7D32"/><rect x="8" y="13" width="8" height="2" fill="#2E7D32"/></svg>`
  };
  return I[k] || `${S}<rect x="3" y="3" width="18" height="18" rx="3" fill="#233048"/></svg>`;
@@ -135,7 +135,6 @@ $("creds").innerHTML = SITE.credentials.map((c) => { const cl = c.link ? " click
   return `<div class="cred${cl}"${dop}><div class="ic">${credIcon(c.key)}</div><div><div class="o">${esc(c.org)}<span class="tg ${/progress/i.test(c.tag)?'prog':''}">${esc(c.tag)}</span></div><div class="ll">${esc(c.label)}</div><div class="nn">${esc(c.note)}</div>${view}</div></div>`; }).join("");
 $("exp").innerHTML = SITE.experience.map((e) => `<div class="row"><div class="r1"><span class="role">${esc(e.role)}</span><span class="date">${esc(e.date)}</span></div><div class="org">${esc(e.org)}</div><div class="note">${esc(e.note)}</div></div>`).join("");
 $("skills").innerHTML = SITE.skills.map((s) => `<span class="chip">${esc(s)}</span>`).join("");
-$("projCmt").textContent = `// ${SITE.projects.length} builds · hover for Oscar`;
 $("kpis").innerHTML = SITE.kpis.map((k) => `<div class="kpi"><div class="n">${k.n}</div><div class="l">${esc(k.l)}</div></div>`).join("");
 $("langs").innerHTML = SITE.langs.map((l) => `<div class="bar"><span>${esc(l.lbl)}</span><span class="track"><span class="fill" style="width:${l.pct}%"></span></span><span class="pct">${l.pct}%</span></div>`).join("");
 $("projects").innerHTML = SITE.projects.map((p) => {
