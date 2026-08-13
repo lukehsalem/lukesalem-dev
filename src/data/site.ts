@@ -22,7 +22,7 @@ export const site = {
   },
 
   // shown in the "about" panel (bento layout)
-  bio: "Hey, I'm Luke! I'm a rising CS senior turning real-world solutions into reality with my passion in software, data, and AI engineering. Right now I'm a Data Analyst II for Florida's Department of Financial Services, building OrgFlow on the side, and aiming squarely at the intersection of software, data, and fintech.",
+  bio: "Hey, I'm Luke! I'm a rising CS senior turning real-world solutions into reality with my passion in software, data, and AI engineering. Right now I'm a Data Scientist II for Florida's Department of Financial Services, building OrgFlow on the side, and aiming squarely at the intersection of software, data, and fintech.",
   credentials: [
     { key: "vanderbilt", org: "Vanderbilt University", label: "Data Mining Research · OUYANG Group", note: "Curating ML training data for materials-property prediction", tag: "Research", link: "https://jeff-oakley.github.io/LiteratureMiningDatabase/", linkText: "view site" },
     { key: "ibm", org: "IBM", label: "Agile Development & Scrum", note: "Issued with honors", tag: "Certificate", link: "https://s3.amazonaws.com/coursera_assets/meta_images/generated/CERTIFICATE_LANDING_PAGE/CERTIFICATE_LANDING_PAGE~BS53T3G04AOH/CERTIFICATE_LANDING_PAGE~BS53T3G04AOH.jpeg", linkText: "view certificate" },
@@ -33,7 +33,7 @@ export const site = {
   about: {
     name: "Luke Salem",
     edu: "B.S. Computer Science, FSU '27",
-    now: "Data Analyst II @ Department of Financial Services · Florida",
+    now: "Data Scientist II @ Department of Financial Services · Florida",
     focus: ["software", "data & analytics", "fintech"],
     stack: ["Python", "SQL / SAS", "C#", "TypeScript", "AWS"],
     building: "OrgFlow — AI-assisted platform for student orgs",
@@ -41,7 +41,7 @@ export const site = {
   },
 
   experience: [
-    { role: "Data Analyst II", org: "Department of Financial Services · Florida", date: "Jun 2026 – Present",
+    { role: "Data Scientist II", org: "Department of Financial Services · Florida", date: "Jun 2026 – Present",
       note: "Regulatory & market data analysis for the Life & Health Product Review unit — statistical analysis, reporting, and process automation; reviewing insurer filings that use predictive models, SAS, and AI/ML." },
     { role: "Data Mining Research", org: "OUYANG Group · Vanderbilt University", date: "Mar 2026 – Present",
       note: "Extract & annotate battery-materials data from scientific literature into standardized schemas; curate training data for an ML materials-property Literature Mining Database." },
