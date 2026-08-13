@@ -7,7 +7,7 @@
 export interface Project { name: string; status?: string; desc: string; tech: string[]; github?: string; live?: string; }
 export interface Exp { role: string; org: string; date: string; loc?: string; bullets: string[]; }
 export interface Cred { key: string; org: string; label: string; note: string; tag: string; link?: string; linkText?: string; }
-export interface Marker { role: string; org: string; }
+export interface Marker { role: string; org: string; tone: "green" | "blue" | "amber" | "red"; }
 
 export const site = {
   name: "Luke Salem",
@@ -25,22 +25,22 @@ export const site = {
   // headshot (rounded-square in the hero)
   photo: "/luke.jpg",
 
-  // short line shown by the terminal `about` command
-  bio: "CS student at Florida State (B.S. CS, Math minor, '27) working at the intersection of software, data, and AI — currently a Data Scientist II for Florida's Dept. of Financial Services, building RAG and document-intelligence systems, and researching materials-science ML at Vanderbilt.",
+  // condensed subtitle under the name
+  subtitle: "CS & Math Student · Data Scientist · Research Assistant",
 
-  // professional About paragraph (prose section under the hero)
-  aboutProse: "I'm a Computer Science student at Florida State University, minoring in Mathematics, focused on the intersection of software, data, and AI engineering. I currently serve as a Data Scientist II for Florida's Department of Financial Services, where I analyze thousands of insurer filings that apply predictive models and AI/ML across a multi-billion-dollar regulated insurance market. Alongside that, I engineer retrieval-augmented (RAG) pipelines and document-intelligence systems — most recently through an AI & Data Externship at Pfizer — and contribute to materials-science ML research with the OUYANG Group at Vanderbilt University. I care about building reliable, production-grade systems and turning messy, real-world data into tools people can actually use.",
+  // short line shown by the terminal `about` command
+  bio: "Aspiring Software Engineer with a passion for building scalable, user-centered solutions that solve real-world problems. I focus on clean, efficient code and enjoy working at the intersection of data, research, AI, and financial technology.",
+
+  // About paragraph (prose section under the hero)
+  aboutProse: "Aspiring Software Engineer with a passion for building scalable, user-centered solutions that solve real-world problems. I focus on clean, efficient code and enjoy working at the intersection of data, research, AI, and financial technology. Outside of coding I contribute to student organizations, mentor peers, and build projects that provide real value.",
 
   // role markers shown near the name (compact, à la a résumé header)
   markers: [
-    { role: "Data Scientist II", org: "Florida Dept. of Financial Services" },
-    { role: "AI & Data Extern", org: "Pfizer" },
-    { role: "Data Mining Research", org: "OUYANG Group · Vanderbilt" },
-    { role: "ERP Analyst", org: "FSU IT Services" },
+    { role: "Data Scientist II", org: "Florida Dept. of Financial Services", tone: "green" },
+    { role: "AI & Data Extern", org: "Pfizer", tone: "blue" },
+    { role: "Data Mining Research", org: "OUYANG Group · Vanderbilt", tone: "amber" },
+    { role: "ERP Analyst", org: "FSU IT Services", tone: "red" },
   ] as Marker[],
-
-  // curated, featured skills (highlighted block up top)
-  topSkills: ["Machine Learning", "Artificial Intelligence", "Large Language Models", "RAG", "Python", "SQL", "AWS", "Data Analytics"],
 
   credentials: [
     { key: "vanderbilt", org: "Vanderbilt University", label: "Data Mining Research · OUYANG Group", note: "Curating ML training data for materials-property prediction", tag: "Research", link: "https://jeff-oakley.github.io/LiteratureMiningDatabase/", linkText: "view site" },
@@ -131,8 +131,8 @@ export const site = {
     { lbl: "CSS", pct: 11 },
     { lbl: "TypeScript", pct: 6 },
   ],
-  // full skills list for the skills section
-  skills: ["Python", "SQL", "SAS", "C#", "C++", "Java", "TypeScript", "Pandas", "NumPy", "PostgreSQL", "pgvector", "Django", "Node.js", "React Native", "AWS", "Docker", "Chart.js", "Jupyter", "Git", "Linux"],
+  // full merged "Top Skills" list (shown beside About)
+  skills: ["Machine Learning", "Artificial Intelligence", "Large Language Models", "RAG", "Data Analytics", "Python", "SQL", "SAS", "C++", "C#", "Java", "TypeScript", "Pandas", "NumPy", "Matplotlib", "Tableau", "PostgreSQL", "pgvector", "Django", "Node.js", "Express", "Prisma", "LangChain", ".NET", "ASP.NET", "React Native", "AWS", "Supabase", "Docker", "Redis", "Chart.js", "Jupyter", "Git", "Linux"],
   // GitHub username used for the live contribution graph
   github: "lukehsalem",
   // living stat shown up front (bump as you ship — OrgFlow is in progress now)

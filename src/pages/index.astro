@@ -6,7 +6,7 @@ import "../styles/portfolio.css";
 const data = {
   site: {
     domain: site.domain, email: site.email, links: site.links, shipped: site.shipped, bio: site.bio,
-    photo: site.photo, aboutProse: site.aboutProse, markers: site.markers, topSkills: site.topSkills,
+    photo: site.photo, aboutProse: site.aboutProse, markers: site.markers,
     experience: site.experience, credentials: site.credentials, skills: site.skills,
     projects: site.projects, kpis: site.kpis, langs: site.langs, github: site.github,
   },
@@ -44,9 +44,9 @@ const year = new Date().getFullYear();
             <div class="oscar-hero" id="heroActor"></div>
             <h1>luke<br/>salem<span class="dot">_</span></h1>
           </div>
-          <div class="tag"><span class="rd">CS @ FSU '27</span> · <b>Data Scientist II</b> · <span class="amber">software + data + fintech</span></div>
+          <div class="subtitle">{site.subtitle}</div>
         </div>
-        <img class="photo" src={site.photo} width="118" height="118" alt="Luke Salem" loading="eager" />
+        <img class="photo" src={site.photo} width="156" height="156" alt="Luke Salem" loading="eager" />
       </div>
       <div class="markers" id="markers"></div>
       <div class="links" id="links"></div>
@@ -55,10 +55,12 @@ const year = new Date().getFullYear();
 
   <section class="sec">
     <div class="sec-head"><h2>About</h2></div>
-    <p class="about-prose" id="aboutProse"></p>
-    <div class="topskills">
-      <div class="ts-label">Top Skills</div>
-      <div class="chips" id="topskills"></div>
+    <div class="about-grid">
+      <p class="about-prose" id="aboutProse"></p>
+      <div class="skillpanel">
+        <div class="sp-label">Top Skills</div>
+        <div class="chips" id="skills"></div>
+      </div>
     </div>
   </section>
 
@@ -75,11 +77,6 @@ const year = new Date().getFullYear();
   <section class="sec">
     <div class="sec-head"><h2>Projects</h2></div>
     <div class="grid" id="projects"></div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-head"><h2>Skills</h2></div>
-    <div class="chips" id="skills"></div>
   </section>
 
   <section class="sec">
@@ -143,8 +140,7 @@ function credIcon(k){ const S='<svg viewBox="0 0 24 24" width="34" height="34" s
 
 $("heroActor").innerHTML = flatOscar(78);
 $("aboutProse").textContent = SITE.aboutProse;
-$("markers").innerHTML = SITE.markers.map((m) => `<div class="marker"><span class="m-role">${esc(m.role)}</span><span class="m-at">@</span><span class="m-org">${esc(m.org)}</span></div>`).join("");
-$("topskills").innerHTML = SITE.topSkills.map((s) => `<span class="chip ts">${esc(s)}</span>`).join("");
+$("markers").innerHTML = SITE.markers.map((m) => `<div class="marker"><span class="m-role">${esc(m.role)}</span><span class="m-at">@</span><span class="m-org tone-${esc(m.tone)}">${esc(m.org)}</span></div>`).join("");
 const shipPill = `<span class="shipstat"><span class="pulse"></span><b>${SITE.shipped.count}</b> projects shipped in ${SITE.shipped.year}</span>`;
 $("links").innerHTML = shipPill + linkRow(SITE.links);
 $("footLinks").innerHTML = linkRow(SITE.links);
