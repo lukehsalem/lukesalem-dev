@@ -6,6 +6,7 @@ import "../styles/portfolio.css";
 const data = {
   site: {
     domain: site.domain, email: site.email, links: site.links, shipped: site.shipped, bio: site.bio,
+    photo: site.photo, aboutProse: site.aboutProse, markers: site.markers, topSkills: site.topSkills,
     experience: site.experience, credentials: site.credentials, skills: site.skills,
     projects: site.projects, kpis: site.kpis, langs: site.langs, github: site.github,
   },
@@ -37,38 +38,52 @@ const year = new Date().getFullYear();
       </div>
     </section>
     <section class="intro">
-      <div class="namerow">
-        <div class="oscar-hero" id="heroActor"></div>
-        <h1>luke<br/>salem<span class="dot">_</span></h1>
+      <div class="introtop">
+        <div class="introleft">
+          <div class="namerow">
+            <div class="oscar-hero" id="heroActor"></div>
+            <h1>luke<br/>salem<span class="dot">_</span></h1>
+          </div>
+          <div class="tag"><span class="rd">CS @ FSU '27</span> · <b>Data Scientist II</b> · <span class="amber">software + data + fintech</span></div>
+        </div>
+        <img class="photo" src={site.photo} width="118" height="118" alt="Luke Salem" loading="eager" />
       </div>
-      <div class="tag"><span class="rd">CS @ FSU '27</span> · <b>Data Scientist II</b> · <span class="amber">software + data + fintech</span></div>
-      <p class="about-blurb" id="bio"></p>
+      <div class="markers" id="markers"></div>
       <div class="links" id="links"></div>
     </section>
   </div>
 
   <section class="sec">
-    <div class="sec-head"><h2>experience</h2></div>
+    <div class="sec-head"><h2>About</h2></div>
+    <p class="about-prose" id="aboutProse"></p>
+    <div class="topskills">
+      <div class="ts-label">Top Skills</div>
+      <div class="chips" id="topskills"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><h2>Experience</h2></div>
     <div class="tl" id="exp"></div>
   </section>
 
   <section class="sec">
-    <div class="sec-head"><h2>credentials</h2></div>
+    <div class="sec-head"><h2>Credentials</h2></div>
     <div class="creds" id="creds"></div>
   </section>
 
   <section class="sec">
-    <div class="sec-head"><h2>projects</h2></div>
+    <div class="sec-head"><h2>Projects</h2></div>
     <div class="grid" id="projects"></div>
   </section>
 
   <section class="sec">
-    <div class="sec-head"><h2>skills</h2></div>
+    <div class="sec-head"><h2>Skills</h2></div>
     <div class="chips" id="skills"></div>
   </section>
 
   <section class="sec">
-    <div class="sec-head"><h2>stats</h2><span class="cmt">// real, from GitHub</span></div>
+    <div class="sec-head"><h2>Stats</h2><span class="cmt">// real, from GitHub</span></div>
     <div class="kpis" id="kpis"></div>
     <div class="statbox">
       <div class="t">contribution graph <span class="cm">// pulled live from GitHub API</span></div>
@@ -127,13 +142,16 @@ function credIcon(k){ const S='<svg viewBox="0 0 24 24" width="34" height="34" s
 }
 
 $("heroActor").innerHTML = flatOscar(78);
-$("bio").textContent = SITE.bio;
+$("aboutProse").textContent = SITE.aboutProse;
+$("markers").innerHTML = SITE.markers.map((m) => `<div class="marker"><span class="m-role">${esc(m.role)}</span><span class="m-at">@</span><span class="m-org">${esc(m.org)}</span></div>`).join("");
+$("topskills").innerHTML = SITE.topSkills.map((s) => `<span class="chip ts">${esc(s)}</span>`).join("");
 const shipPill = `<span class="shipstat"><span class="pulse"></span><b>${SITE.shipped.count}</b> projects shipped in ${SITE.shipped.year}</span>`;
 $("links").innerHTML = shipPill + linkRow(SITE.links);
 $("footLinks").innerHTML = linkRow(SITE.links);
 $("creds").innerHTML = SITE.credentials.map((c) => { const cl = c.link ? " clickable" : ""; const dop = c.link ? ` data-open="${esc(c.link)}"` : ""; const view = c.link ? `<div class="cview">${esc(c.linkText||"view certificate")} ↗</div>` : "";
   return `<div class="cred${cl}"${dop}><div class="ic">${credIcon(c.key)}</div><div><div class="o">${esc(c.org)}<span class="tg ${/progress/i.test(c.tag)?'prog':''}">${esc(c.tag)}</span></div><div class="ll">${esc(c.label)}</div><div class="nn">${esc(c.note)}</div>${view}</div></div>`; }).join("");
-$("exp").innerHTML = SITE.experience.map((e) => `<div class="row"><div class="r1"><span class="role">${esc(e.role)}</span><span class="date">${esc(e.date)}</span></div><div class="org">${esc(e.org)}</div><div class="note">${esc(e.note)}</div></div>`).join("");
+$("exp").innerHTML = SITE.experience.map((e) => { const dt = e.loc ? `${esc(e.date)} · ${esc(e.loc)}` : esc(e.date); const bl = (e.bullets||[]).map((b) => `<li>${esc(b)}</li>`).join("");
+  return `<div class="row"><div class="r1"><span class="xorg">${esc(e.org)}</span><span class="date">${dt}</span></div><div class="xrole">${esc(e.role)}</div><ul class="bl">${bl}</ul></div>`; }).join("");
 $("skills").innerHTML = SITE.skills.map((s) => `<span class="chip">${esc(s)}</span>`).join("");
 $("kpis").innerHTML = SITE.kpis.map((k) => `<div class="kpi"><div class="n">${k.n}</div><div class="l">${esc(k.l)}</div></div>`).join("");
 $("langs").innerHTML = SITE.langs.map((l) => `<div class="bar"><span>${esc(l.lbl)}</span><span class="track"><span class="fill" style="width:${l.pct}%"></span></span><span class="pct">${l.pct}%</span></div>`).join("");
