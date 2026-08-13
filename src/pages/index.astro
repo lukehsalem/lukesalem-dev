@@ -28,26 +28,14 @@ const year = new Date().getFullYear();
 </head>
 <body>
 <div class="wrap">
-  <div class="hero">
-    <section class="window">
-      <div class="titlebar"><span class="d3 rr"></span><span class="d3 yy"></span><span class="d3 gg"></span><span class="ttl">luke@lukesalem.dev — zsh</span></div>
-      <div id="screen" role="log" aria-live="polite">
-        <div id="history"></div>
-        <div id="inputline" hidden><span class="prompt">luke</span><span class="muted">@</span><span class="path">dev</span><span class="muted">:~$</span>
-          <input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" /></div>
-      </div>
-    </section>
+  <div class="hero hero-solo">
     <section class="intro">
-      <div class="introtop">
-        <div class="introleft">
-          <div class="namerow">
-            <div class="oscar-hero" id="heroActor"></div>
-            <h1>luke<br/>salem<span class="dot">_</span></h1>
-          </div>
-          <div class="subtitle">{site.subtitle}</div>
-        </div>
-        <img class="photo" src={site.photo} width="156" height="156" alt="Luke Salem" loading="eager" />
+      <div class="namerow">
+        <div class="oscar-hero" id="heroActor"></div>
+        <h1>luke<br/>salem<span class="dot">_</span></h1>
       </div>
+      <div class="subtitle">{site.subtitle}</div>
+      <img class="photo" src={site.photo} width="156" height="156" alt="Luke Salem" loading="eager" />
       <div class="markers" id="markers"></div>
       <div class="links" id="links"></div>
     </section>
@@ -62,6 +50,14 @@ const year = new Date().getFullYear();
         <div class="chips" id="skills"></div>
       </div>
     </div>
+    <section class="window window-sm">
+      <div class="titlebar"><span class="d3 rr"></span><span class="d3 yy"></span><span class="d3 gg"></span><span class="ttl">luke@lukesalem.dev — zsh</span></div>
+      <div id="screen" role="log" aria-live="polite">
+        <div id="history"></div>
+        <div id="inputline" hidden><span class="prompt">luke</span><span class="muted">@</span><span class="path">dev</span><span class="muted">:~$</span>
+          <input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" /></div>
+      </div>
+    </section>
   </section>
 
   <section class="sec">

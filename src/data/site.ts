@@ -131,8 +131,8 @@ export const site = {
     { lbl: "CSS", pct: 11 },
     { lbl: "TypeScript", pct: 6 },
   ],
-  // full merged "Top Skills" list (shown beside About)
-  skills: ["Machine Learning", "Artificial Intelligence", "Large Language Models", "RAG", "Data Analytics", "Python", "SQL", "SAS", "C++", "C#", "Java", "TypeScript", "Pandas", "NumPy", "Matplotlib", "Tableau", "PostgreSQL", "pgvector", "Django", "Node.js", "Express", "Prisma", "LangChain", ".NET", "ASP.NET", "React Native", "AWS", "Supabase", "Docker", "Redis", "Chart.js", "Jupyter", "Git", "Linux"],
+  // curated "Top Skills" list — in-demand core (shown beside About)
+  skills: ["Machine Learning", "Artificial Intelligence", "Large Language Models", "RAG", "Python", "SQL", "TypeScript", "Java", "C++", "PostgreSQL", "pgvector", "Pandas", "NumPy", "Node.js", "LangChain", "AWS", "Docker", "Data Analytics"],
   // GitHub username used for the live contribution graph
   github: "lukehsalem",
   // living stat shown up front (bump as you ship — OrgFlow is in progress now)
