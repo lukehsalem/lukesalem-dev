@@ -35,7 +35,7 @@ const year = new Date().getFullYear();
         <h1>luke<br/>salem<span class="dot">_</span></h1>
       </div>
       <div class="subtitle">{site.subtitle}</div>
-      <img class="photo" src={site.photo} width="156" height="156" alt="Luke Salem" loading="eager" />
+      <img class="photo" src={site.photo} width="210" height="210" alt="Luke Salem" loading="eager" />
       <div class="markers" id="markers"></div>
       <div class="links" id="links"></div>
     </section>
@@ -44,20 +44,39 @@ const year = new Date().getFullYear();
   <section class="sec">
     <div class="sec-head"><h2>About</h2></div>
     <div class="about-grid">
-      <p class="about-prose" id="aboutProse"></p>
-      <div class="skillpanel">
-        <div class="sp-label">Top Skills</div>
-        <div class="chips" id="skills"></div>
+      <div class="about-left">
+        <p class="about-prose" id="aboutProse"></p>
+        <section class="window window-sm">
+          <div class="titlebar"><span class="d3 rr"></span><span class="d3 yy"></span><span class="d3 gg"></span><span class="ttl">luke@lukesalem.dev — zsh</span></div>
+          <div id="screen" role="log" aria-live="polite">
+            <div id="history"></div>
+            <div id="inputline" hidden><span class="prompt">luke</span><span class="muted">@</span><span class="path">dev</span><span class="muted">:~$</span>
+              <input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" /></div>
+          </div>
+        </section>
       </div>
+      <aside class="infocard">
+        <div class="ic-block">
+          <div class="sp-label">Contact</div>
+          <div class="contact">
+            <div class="c-loc">{site.location}</div>
+            <a href={site.links.email}>{site.email}</a>
+            <a href={site.links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+            <a href={site.links.github} target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+        <div class="ic-block">
+          <div class="sp-label">Top Skills</div>
+          <div class="chips" id="skills"></div>
+        </div>
+        <div class="ic-block">
+          <div class="sp-label">Certifications</div>
+          <ul class="certs">
+            {site.certs.map((c) => <li>{c}</li>)}
+          </ul>
+        </div>
+      </aside>
     </div>
-    <section class="window window-sm">
-      <div class="titlebar"><span class="d3 rr"></span><span class="d3 yy"></span><span class="d3 gg"></span><span class="ttl">luke@lukesalem.dev — zsh</span></div>
-      <div id="screen" role="log" aria-live="polite">
-        <div id="history"></div>
-        <div id="inputline" hidden><span class="prompt">luke</span><span class="muted">@</span><span class="path">dev</span><span class="muted">:~$</span>
-          <input id="cmd" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="terminal input" /></div>
-      </div>
-    </section>
   </section>
 
   <section class="sec">

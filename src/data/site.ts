@@ -28,6 +28,16 @@ export const site = {
   // condensed subtitle under the name
   subtitle: "CS & Math Student · Data Scientist · Research Assistant",
 
+  // contact block (info card, à la Upi)
+  location: "Tallahassee, Florida, United States",
+
+  // certifications (info card)
+  certs: [
+    "Machine Learning Specialization — Stanford Online",
+    "IBM Agile Development & Scrum — IBM (with honors)",
+    "CS50: Programming with Python — Harvard Online",
+  ],
+
   // short line shown by the terminal `about` command
   bio: "Aspiring Software Engineer with a passion for building scalable, user-centered solutions that solve real-world problems. I focus on clean, efficient code and enjoy working at the intersection of data, research, AI, and financial technology.",
 
