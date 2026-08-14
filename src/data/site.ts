@@ -39,10 +39,10 @@ export const site = {
   ],
 
   // short line shown by the terminal `about` command
-  bio: "Aspiring Software Engineer with a passion for building scalable, user-centered solutions that solve real-world problems. I focus on clean, efficient code and enjoy working at the intersection of data, research, AI, and financial technology.",
+  bio: "Hey, I'm Luke. I'm a current student, data scientist, and ERP analyst intern with excellent proficiency in software & data engineering as well as machine learning and mathematical principles with a strong focus on AI.",
 
   // About paragraph (prose section under the hero)
-  aboutProse: "Aspiring Software Engineer with a passion for building scalable, user-centered solutions that solve real-world problems. I focus on clean, efficient code and enjoy working at the intersection of data, research, AI, and financial technology. Outside of coding I contribute to student organizations, mentor peers, and build projects that provide real value.",
+  aboutProse: "Hey, I'm Luke. I'm a current student, data scientist, and ERP analyst intern with excellent proficiency in software & data engineering as well as machine learning and mathematical principles with a strong focus on AI. I have a strong passion for building scalable, user-centered solutions that not only solve real-world problems, but make them better. I enjoy producing clean, efficient code with an even bigger love of working at the intersection of financial technology & AI. Outside of coding I largely contribute to student organizations I'm involved with and build projects that provide real-world value.",
 
   // role markers shown near the name (compact, à la a résumé header)
   markers: [
@@ -98,8 +98,8 @@ export const site = {
       role: "ERP Analyst", org: "FSU Information Technology Services",
       date: "Aug 2026 – Present", loc: "Tallahassee, FL",
       bullets: [
-        "Author simple-to-medium complexity SQL queries in PeopleSoft Query Manager and support FACET operational reporting to surface HR data for campus stakeholders — collaborating with analysts and developers to gather requirements and deliver reporting solutions.",
-        "Maintain lower PeopleSoft ERP HR testing environments by keeping module data current and in-sync, and design testing scenarios for recruiting and onboarding workflows to validate system integrity ahead of production deployment.",
+        "Supported PeopleSoft ERP modules (Finance, HCM, Campus Solutions) in a large-scale enterprise environment — authoring SQL queries via Query Manager, developing and executing functional test cases across HR modules (Benefits through Commitment Accounting), and documenting results to validate system stability and data accuracy ahead of production deployment.",
+        "Maintained lower testing environments and supported Automic job scheduling for enterprise batch processing, job monitoring, and workflow automation — collaborating with cross-functional stakeholders, analysts, and developers to gather requirements, troubleshoot system issues, and drive continuous process-improvement initiatives.",
       ],
     },
   ] as Exp[],
