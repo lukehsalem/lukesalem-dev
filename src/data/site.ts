@@ -42,7 +42,7 @@ export const site = {
   bio: "Hey, I'm Luke. I'm a current student, data scientist, and ERP analyst intern with excellent proficiency in software & data engineering as well as machine learning and mathematical principles with a strong focus on AI.",
 
   // About paragraph (prose section under the hero)
-  aboutProse: "Hey, I'm Luke. I'm a current student, data scientist, and ERP analyst intern with excellent proficiency in software & data engineering as well as machine learning and mathematical principles with a strong focus on AI. I have a strong passion for building scalable, user-centered solutions that not only solve real-world problems, but make them better. I enjoy producing clean, efficient code with an even bigger love of working at the intersection of financial technology & AI. Outside of coding I largely contribute to student organizations I'm involved with and build projects that provide real-world value.",
+  aboutProse: "Hey, I'm Luke. I'm a current student, data scientist, and ERP analyst intern with excellent proficiency in software & data engineering as well as machine learning and mathematical principles with a strong focus on AI. I have a strong passion for building scalable, user-centered solutions that not only solve real-world problems, but make them better. I enjoy producing clean, efficient code with an even bigger love of working at the intersection of financial technology & AI. Outside of coding I largely contribute to student organizations and build projects that provide real-world value.",
 
   // role markers shown near the name (compact, à la a résumé header)
   markers: [
@@ -105,6 +105,9 @@ export const site = {
   ] as Exp[],
 
   projects: [
+    { name: "Oscar the Lobster AI", status: "In Development",
+      desc: "Modular AI platform & agent runtime — agent orchestration, a tool router, retrieval layer, model gateway, and an evaluation harness — built as shared infrastructure that production AI/ML and fintech apps deploy on. Evaluation-first: versioned golden datasets, LLM-as-judge scoring, and CI regression gates that block deploys on quality drops, with distributed tracing and per-request cost/latency observability across model providers.",
+      tech: ["Python", "FastAPI", "TypeScript", "PostgreSQL", "pgvector", "Redis", "LangChain", "AWS", "Docker", "LLM"], github: "", live: "" },
     { name: "OrgFlow", status: "In Development",
       desc: "Production backend for a student-org mobile app: PostgreSQL schema + REST APIs on Node/Express/Prisma, deployed on AWS. RAG pipeline over org data using pgvector embeddings + LLM providers.",
       tech: ["Node.js", "Express", "Prisma", "PostgreSQL", "pgvector", "TypeScript", "Python", "LangChain", "AWS", "Docker"], github: "", live: "" },

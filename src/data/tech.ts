@@ -30,4 +30,7 @@ export const TECH: Record<string, Tech> = {
   "Agile":            { bg: "#334155", fg: "#dbe6f5" },
   "Scrum":            { bg: "#334155", fg: "#dbe6f5" },
   "GitHub Projects":  { bg: "#181717", fg: "#fff",    icon: "github",            ic: "ffffff" },
+  "FastAPI":          { bg: "#009688", fg: "#fff",    icon: "fastapi",           ic: "ffffff" },
+  "Redis":            { bg: "#DC382D", fg: "#fff",    icon: "redis",             ic: "ffffff" },
+  "LLM":              { bg: "#6E56CF", fg: "#fff" },
 };
