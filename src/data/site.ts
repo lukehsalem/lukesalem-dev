@@ -110,7 +110,7 @@ export const site = {
       tech: ["Python", "FastAPI", "TypeScript", "PostgreSQL", "pgvector", "Redis", "LangChain", "AWS", "Docker", "LLM"], github: "", live: "" },
     { name: "OrgFlow", status: "In Development",
       desc: "Production backend for a student-org mobile app: PostgreSQL schema + REST APIs on Node/Express/Prisma, deployed on AWS. RAG pipeline over org data using pgvector embeddings + LLM providers.",
-      tech: ["Node.js", "Express", "Prisma", "PostgreSQL", "pgvector", "TypeScript", "Python", "LangChain", "AWS", "Docker"], github: "", live: "" },
+      tech: ["Node.js", "Express", "Prisma", "PostgreSQL", "pgvector", "TypeScript", "Python", "LangChain", "Redis", "LLM", "AWS", "Docker"], github: "", live: "" },
     { name: "Full-Stack Data Web App", status: "",
       desc: "End-to-end data product: ingest → analyze → serve. Python pipeline on the GitHub REST API, NBA advanced-stats EDA in Jupyter/Pandas (1,890 rows), deployed Django app with a Chart.js dashboard.",
       tech: ["Python", "Django", "Pandas", "NumPy", "Jupyter", "Chart.js", "Bootstrap", "SQLite"],
